@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: ba54a4199826aa842873ed5ffdc2c9bc
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - healthBarCanvas: {fileID: 9127596054908691638, guid: 9ff599aeecd6f51438ef94d3e1e80084, type: 3}
+  - healthBar: {fileID: 8074298746099837751, guid: 2f414de6403842f42ad5f6b4b698afe7, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

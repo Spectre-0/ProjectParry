@@ -5,6 +5,9 @@ using UnityEngine;
 public class PlayerMotor : MonoBehaviour
 {
 
+    public GameObject attackHitboxPrefab;  // Attach a prefab for the hitbox in Unity Editor
+    public float attackDistance = 1.0f;   // The distance in front of the player where the hitbox will appear
+
     public CharacterController controller;
 
     private Vector3 plaryVelocity;
@@ -43,7 +46,7 @@ public class PlayerMotor : MonoBehaviour
             plaryVelocity.y = -2f;
         }
         controller.Move(plaryVelocity * Time.deltaTime);
-        Debug.Log(plaryVelocity.y);
+        // Debug.Log(plaryVelocity.y);
 
 
     }
@@ -55,4 +58,17 @@ public class PlayerMotor : MonoBehaviour
             plaryVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
     }
+
+    public void Attack()
+    {
+        // Create a hitbox in front of the player
+        Vector3 attackPosition = transform.position + transform.forward * attackDistance;
+        GameObject hitbox = Instantiate(attackHitboxPrefab, attackPosition, transform.rotation);
+
+        // Destroy the hitbox after a short time (e.g., 0.5 seconds)
+        Destroy(hitbox, 0.5f);
+
+        // Add code to detect collisions with enemies, apply damage, etc.
+    }
+
 }
