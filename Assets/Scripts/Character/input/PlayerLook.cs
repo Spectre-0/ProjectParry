@@ -6,6 +6,13 @@ public class PlayerLook : MonoBehaviour
 {
     // Start is called before the first frame update
 
+    void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+
     public Camera cam;
     private float xRotation = 0f;
 
