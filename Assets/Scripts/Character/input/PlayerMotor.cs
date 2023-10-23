@@ -5,6 +5,13 @@ using UnityEngine;
 public class PlayerMotor : MonoBehaviour
 {
 
+    public float speed = 5f;
+    public float sprintMultiplier = 2f; // How much faster the player will sprint
+
+    public float dodgeSpeed = 10f;  // How fast the player will dodge
+    private float currentSpeed;
+
+
     public GameObject attackHitboxPrefab;  // Attach a prefab for the hitbox in Unity Editor
     public float attackDistance = 1.0f;   // The distance in front of the player where the hitbox will appear
 
@@ -14,15 +21,16 @@ public class PlayerMotor : MonoBehaviour
 
     private bool isGrounded;
     public float gravity = -9.81f;
-    public float speed = 5f;
+
 
     public float jumpHeight = 3f;
     // Start is called before the first frame update
     void Start()
     {
 
+
         controller = GetComponent<CharacterController>();
-        
+        currentSpeed = speed; // Initialize currentSpeedb        
     }
 
     // Update is called once per frame
@@ -39,16 +47,14 @@ public class PlayerMotor : MonoBehaviour
         Vector3 moveDirection = Vector3.zero;
         moveDirection.x = input.x;
         moveDirection.z = input.y;
-        controller.Move(transform.TransformDirection(moveDirection) * speed * Time.deltaTime);
-        plaryVelocity  += Vector3.up * gravity * Time.deltaTime;
-        if(isGrounded && plaryVelocity.y < 0)
+        controller.Move(transform.TransformDirection(moveDirection) * currentSpeed * Time.deltaTime);
+        plaryVelocity += Vector3.up * gravity * Time.deltaTime;
+        if (isGrounded && plaryVelocity.y < 0)
         {
             plaryVelocity.y = -2f;
         }
         controller.Move(plaryVelocity * Time.deltaTime);
         // Debug.Log(plaryVelocity.y);
-
-
     }
 
     public void Jump()
@@ -69,6 +75,41 @@ public class PlayerMotor : MonoBehaviour
         Destroy(hitbox, 0.5f);
 
         // Add code to detect collisions with enemies, apply damage, etc.
+    }
+
+
+    public void Dodge(Vector2 direction)
+    {
+        if (isGrounded)
+        {
+            Vector3 dodgeDirection = Vector3.zero;
+
+            // If player is stationary, dodge backward
+            if (direction == Vector2.zero)
+            {
+                dodgeDirection = -transform.forward; 
+            }
+            else
+            {
+                // Use the direction of movement for dodging
+                dodgeDirection = new Vector3(direction.x, 0, direction.y).normalized;
+                dodgeDirection = transform.TransformDirection(dodgeDirection);
+            }
+
+            controller.Move(dodgeDirection * dodgeSpeed * Time.deltaTime);
+        }
+    }
+
+    public void Sprint(bool isSprinting)
+    {
+        if (isSprinting)
+        {
+            currentSpeed = speed * sprintMultiplier;
+        }
+        else
+        {
+            currentSpeed = speed;
+        }
     }
 
 }
