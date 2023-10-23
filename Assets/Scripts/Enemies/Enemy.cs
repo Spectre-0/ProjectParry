@@ -22,7 +22,7 @@ public class Enemy : MonoBehaviour
     private Renderer rend;  // For changing color
     private Color originalColor;
 
-    public float headbuttStoppingDistance = 0.1f;  // New variable
+
 
     // Start is called before the first frame update
     void Start()
@@ -70,20 +70,14 @@ public class Enemy : MonoBehaviour
 
 
 
-    
+  
 
     IEnumerator HeadbuttAttack()
     {
         isLeaping = true;
         rend.material.color = Color.blue;  // Turn blue during attack
 
-        Vector3 directionToPlayer = (player.position - transform.position).normalized;
-        Vector3 leapTarget = new Vector3(
-            player.position.x - directionToPlayer.x * headbuttStoppingDistance,
-            transform.position.y,  // Use the Y-coordinate of the enemy itself
-            player.position.z - directionToPlayer.z * headbuttStoppingDistance
-        );
-
+        Vector3 leapTarget = new Vector3(player.position.x, transform.position.y, player.position.z);
         Vector3 startPos = transform.position;
 
         enemy.isStopped = true;  // Disable NavMeshAgent temporarily
@@ -109,7 +103,7 @@ public class Enemy : MonoBehaviour
         // Calculate retreat position
         Vector3 retreatPosition = new Vector3(
             transform.position.x - (player.position.x - transform.position.x) * retreatDistance,
-            transform.position.y,  // Use the Y-coordinate of the enemy itself
+            transform.position.y,
             transform.position.z - (player.position.z - transform.position.z) * retreatDistance
         );
 
@@ -133,7 +127,6 @@ public class Enemy : MonoBehaviour
         rend.material.color = originalColor;  // Return to original color after attack
         isLeaping = false;
     }
-
 
 
 
