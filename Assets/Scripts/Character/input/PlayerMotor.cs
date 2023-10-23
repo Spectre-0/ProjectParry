@@ -5,10 +5,18 @@ using UnityEngine;
 public class PlayerMotor : MonoBehaviour
 {
 
+    public float maxHealth = 100f;
+    public float currentHealth;
+
+    public float maxStamina = 100f;
+    public float currentStamina;
+
+    public float staminaRegenRate = 5f; // The rate at which stamina regenerates per second
+
     public float speed = 5f;
     public float sprintMultiplier = 2f; // How much faster the player will sprint
 
-    public float dodgeSpeed = 10f;  // How fast the player will dodge
+    public float dodgeSpeed = 500f;  // How fast the player will dodge
     private float currentSpeed;
 
 
@@ -26,9 +34,10 @@ public class PlayerMotor : MonoBehaviour
     public float jumpHeight = 3f;
     // Start is called before the first frame update
     void Start()
-    {
-
-
+    { 
+        currentHealth = maxHealth;
+        currentStamina = maxStamina;
+        
         controller = GetComponent<CharacterController>();
         currentSpeed = speed; // Initialize currentSpeedb        
     }
@@ -37,6 +46,11 @@ public class PlayerMotor : MonoBehaviour
     void Update()
     {
         isGrounded = controller.isGrounded;
+        if (currentStamina < maxStamina)
+        {
+            currentStamina += staminaRegenRate * Time.deltaTime;
+        }
+
         
     }
 
@@ -111,5 +125,26 @@ public class PlayerMotor : MonoBehaviour
             currentSpeed = speed;
         }
     }
+
+    public void TakeDamage(float amount)
+    {
+        Debug.Log("Player losing health");
+        currentHealth -= amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
+        if (currentHealth <= 0f)
+        {
+            // Handle player death
+            Debug.Log("Player is dead");
+        }
+    }
+
+    // Create a method to use stamina
+    public void UseStamina(float amount)
+    {
+        currentStamina -= amount;
+        currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
+    }
+
+
 
 }
