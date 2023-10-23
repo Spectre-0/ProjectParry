@@ -28,11 +28,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
-        Rigidbody rb = GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.isKinematic = true;
-        }
+
         rend = GetComponent<Renderer>();  // For changing color
         originalColor = rend.material.color;
 
@@ -72,12 +68,19 @@ public class Enemy : MonoBehaviour
 
   
 
-    IEnumerator HeadbuttAttack()
-    {
+    IEnumerator HeadbuttAttack(){
         isLeaping = true;
         rend.material.color = Color.blue;  // Turn blue during attack
 
-        Vector3 leapTarget = new Vector3(player.position.x, transform.position.y, player.position.z);
+        Vector3 toPlayer = player.position - transform.position;
+        toPlayer.y = 0;  // Zero out the y component if you only care about horizontal movement
+        float distanceBefore = 1.0f;  // Set your own value for how close "just before" is
+
+        // Normalize the vector so that it has a length of 1, then scale it to your 'distanceBefore'
+        Vector3 leapTarget = player.position - toPlayer.normalized * distanceBefore;
+        leapTarget.y = transform.position.y;
+
+
         Vector3 startPos = transform.position;
 
         enemy.isStopped = true;  // Disable NavMeshAgent temporarily
@@ -127,8 +130,6 @@ public class Enemy : MonoBehaviour
         rend.material.color = originalColor;  // Return to original color after attack
         isLeaping = false;
     }
-
-
 
 
 
