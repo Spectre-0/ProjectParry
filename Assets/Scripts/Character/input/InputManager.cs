@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 public class InputManager : MonoBehaviour
 {
 
+
+
     private PlayerInput playerInput;
     private PlayerInput.OnFootActions onFoot;
 
@@ -22,6 +24,9 @@ public class InputManager : MonoBehaviour
         look = GetComponent<PlayerLook>();
         onFoot.Jump.performed += ctx => motor.Jump();
         onFoot.Attack.performed += ctx => motor.Attack();  // Listen for attack
+        onFoot.Dodge.performed += ctx => motor.Dodge(onFoot.Movement.ReadValue<Vector2>());
+        onFoot.Sprint.started += ctx => motor.Sprint(true); // Begin sprinting
+        onFoot.Sprint.canceled += ctx => motor.Sprint(false); // Stop sprinting
 
         
     }
@@ -29,7 +34,7 @@ public class InputManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        motor.ProcessMove(onFoot.Movememnt.ReadValue<Vector2>());
+        motor.ProcessMove(onFoot.Movement.ReadValue<Vector2>());
         
 
         
