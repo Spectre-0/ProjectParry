@@ -103,6 +103,7 @@ public class PlayerMotor : MonoBehaviour
         float currentTime = Time.time;
         if (currentStamina > 1 && (!hasAttackedBefore || currentTime - lastAttackTime >= attackCooldown))  // Check if there is enough stamina and if the cooldown has passed
         {
+            Debug.Log("Player attacking");
             lastAttackTime = currentTime;  // Update the last attack time
             hasAttackedBefore = true;  // Update the flag since the player has now attacked
             
