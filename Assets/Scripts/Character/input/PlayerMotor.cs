@@ -7,6 +7,13 @@ using UnityEngine.UI;
 public class PlayerMotor : MonoBehaviour
 {
 
+    private bool hasAttackedBefore = false;
+
+    public float attackCooldown = 5f;  // Set the cooldown time to 1 second (you can change this value)
+    private float lastAttackTime = 0f;  // Stores the time when the last attack occurred
+
+    public Animator swordAnimator; // Drag your sword's Animator here in the inspector
+
     public GameObject youDiedText; // Drag your "You Died" UI Text element here in the inspector
 
 
@@ -93,10 +100,16 @@ public class PlayerMotor : MonoBehaviour
 
     public void Attack()
     {
-        if(currentStamina > 1) // Check if there is enough stamina to attack
+        float currentTime = Time.time;
+        if (currentStamina > 1 && (!hasAttackedBefore || currentTime - lastAttackTime >= attackCooldown))  // Check if there is enough stamina and if the cooldown has passed
         {
+            lastAttackTime = currentTime;  // Update the last attack time
+            hasAttackedBefore = true;  // Update the flag since the player has now attacked
             
-            UseStamina(2);  // Use 2 units of stamina
+            UseStamina(2);  // Use 2 units of staminaa
+
+            // Trigger the sword swinging animation
+            swordAnimator.SetTrigger("Swing");
 
             // Create a hitbox in front of the player
             Vector3 attackPosition = transform.position + transform.forward * attackDistance;
@@ -105,8 +118,6 @@ public class PlayerMotor : MonoBehaviour
             // Destroy the hitbox after a short time (e.g., 0.5 seconds)
             Destroy(hitbox, 0.5f);
         }
-
-
     }
 
 
