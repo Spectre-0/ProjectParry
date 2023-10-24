@@ -7,6 +7,11 @@ using UnityEngine.UI;
 public class PlayerMotor : MonoBehaviour
 {
 
+    public bool isParrying = false;
+    private float parryCooldown = 2.0f; // 2-second cooldown for the parry
+    private float lastParryTime = 0f;
+
+
     private bool isDodging = false;
 
     private bool hasAttackedBefore = false;
@@ -179,14 +184,40 @@ public class PlayerMotor : MonoBehaviour
         }
     }
 
+    public void Parry()
+    {
+        float currentTime = Time.time;
+        if (currentTime - lastParryTime >= parryCooldown)
+        {
+            swordAnimator.SetTrigger("Swing");
+            Debug.Log("Player is parrying");
+            isParrying = true;
+            lastParryTime = currentTime;
+            StartCoroutine(StopParryAfterDelay(1)); // 1 second of parry window
+        }
+    }
+
+    IEnumerator StopParryAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Debug.Log("Parry window closed");
+        isParrying = false;
+    }
+
+    // Modify TakeDamage method
     public void TakeDamage(float amount)
     {
-        Debug.Log("Player losing health");
-        currentHealth -= amount;
+        if (isParrying)
+        {
+            Debug.Log("Attack parried, no damage taken");
+            return;
+        }
+        
+        Debug.Log("Player losing health, attack blocked");
+        currentHealth -= amount * 0.2f; // 80% damage reduction if missed parry but blocked
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
         if (currentHealth <= 0f)
         {
-            // Handle player death
             Debug.Log("Player is dead");
             HandlePlayerDeath();
         }
@@ -215,6 +246,7 @@ public class PlayerMotor : MonoBehaviour
         currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
     }
 
+    
 
 
 }

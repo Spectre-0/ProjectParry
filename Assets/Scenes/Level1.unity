@@ -258,6 +258,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &299881682 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 832154238247619598, guid: bf73c2db645b6324b942aa5a271a47ab, type: 3}
+  m_PrefabInstance: {fileID: 937217271983322560}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &299881687
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 299881682}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7a23aa1322d28814fbcb9e2f5b9cf5ae, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &623891232
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -751,6 +778,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1515228873182936079, guid: bf73c2db645b6324b942aa5a271a47ab, type: 3}
+      propertyPath: dodgeSpeed
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 1515228873182936079, guid: bf73c2db645b6324b942aa5a271a47ab, type: 3}
       propertyPath: maxStamina
       value: 50
       objectReference: {fileID: 0}
@@ -758,6 +789,10 @@ PrefabInstance:
       propertyPath: youDiedText
       value: 
       objectReference: {fileID: 1347867840}
+    - target: {fileID: 1515228873182936079, guid: bf73c2db645b6324b942aa5a271a47ab, type: 3}
+      propertyPath: swordAnimator
+      value: 
+      objectReference: {fileID: 299881687}
     - target: {fileID: 3959223353161232877, guid: bf73c2db645b6324b942aa5a271a47ab, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
@@ -812,7 +847,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 231477628999952037, guid: bf73c2db645b6324b942aa5a271a47ab, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1347867841}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 832154238247619598, guid: bf73c2db645b6324b942aa5a271a47ab, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 299881687}
   m_SourcePrefab: {fileID: 100100000, guid: bf73c2db645b6324b942aa5a271a47ab, type: 3}
 --- !u!4 &937217271983322572 stripped
 Transform:
