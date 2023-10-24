@@ -1,9 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerMotor : MonoBehaviour
 {
+
+    public GameObject youDiedText; // Drag your "You Died" UI Text element here in the inspector
+
+
+    private bool isSprinting = false;
 
     public float maxHealth = 100f;
     public float currentHealth;
@@ -14,7 +21,7 @@ public class PlayerMotor : MonoBehaviour
     public float staminaRegenRate = 5f; // The rate at which stamina regenerates per second
 
     public float speed = 5f;
-    public float sprintMultiplier = 2f; // How much faster the player will sprint
+    public float sprintMultiplier = 4f; // How much faster the player will sprint
 
     public float dodgeSpeed = 500f;  // How fast the player will dodge
     private float currentSpeed;
@@ -50,8 +57,12 @@ public class PlayerMotor : MonoBehaviour
         {
             currentStamina += staminaRegenRate * Time.deltaTime;
         }
-
         
+        // Add this block to handle constant stamina drain while sprinting
+        if (isSprinting && currentStamina > 0)
+        {
+            UseStamina(10 * Time.deltaTime); // Drain 10 stamina units per second
+        }
     }
 
     // recieve the inputs from the input manager
@@ -76,26 +87,34 @@ public class PlayerMotor : MonoBehaviour
         if(isGrounded)
         {
             plaryVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            UseStamina(10); 
         }
     }
 
     public void Attack()
     {
-        // Create a hitbox in front of the player
-        Vector3 attackPosition = transform.position + transform.forward * attackDistance;
-        GameObject hitbox = Instantiate(attackHitboxPrefab, attackPosition, transform.rotation);
+        if(currentStamina > 1) // Check if there is enough stamina to attack
+        {
+            
+            UseStamina(2);  // Use 2 units of stamina
 
-        // Destroy the hitbox after a short time (e.g., 0.5 seconds)
-        Destroy(hitbox, 0.5f);
+            // Create a hitbox in front of the player
+            Vector3 attackPosition = transform.position + transform.forward * attackDistance;
+            GameObject hitbox = Instantiate(attackHitboxPrefab, attackPosition, transform.rotation);
+            
+            // Destroy the hitbox after a short time (e.g., 0.5 seconds)
+            Destroy(hitbox, 0.5f);
+        }
 
-        // Add code to detect collisions with enemies, apply damage, etc.
+
     }
 
 
     public void Dodge(Vector2 direction)
     {
-        if (isGrounded)
+        if (isGrounded && currentStamina > 4)
         {
+            UseStamina(5);
             Vector3 dodgeDirection = Vector3.zero;
 
             // If player is stationary, dodge backward
@@ -114,8 +133,10 @@ public class PlayerMotor : MonoBehaviour
         }
     }
 
-    public void Sprint(bool isSprinting)
+    public void Sprint(bool sprintState)
     {
+        isSprinting = sprintState;
+
         if (isSprinting)
         {
             currentSpeed = speed * sprintMultiplier;
@@ -135,7 +156,24 @@ public class PlayerMotor : MonoBehaviour
         {
             // Handle player death
             Debug.Log("Player is dead");
+            HandlePlayerDeath();
         }
+    }
+
+
+
+    void HandlePlayerDeath()
+    {
+        youDiedText.SetActive(true); // Show "You Died" text
+        Time.timeScale = 0f; // Freeze the game
+        StartCoroutine(ReloadSceneAfterDelay(3)); // Reload the scene after 3 seconds
+    }
+
+    IEnumerator ReloadSceneAfterDelay(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay); // Realtime delay, as timeScale is 0
+        Time.timeScale = 1f; // Reset time scale
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload the current scene
     }
 
     // Create a method to use stamina

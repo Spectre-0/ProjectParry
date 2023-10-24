@@ -9,6 +9,8 @@ public class PlayerUI : MonoBehaviour
     public Image healthBar;
     public Image staminaBar;
 
+    
+
     void Update()
     {
         healthBar.fillAmount = playerMotor.currentHealth / playerMotor.maxHealth;
