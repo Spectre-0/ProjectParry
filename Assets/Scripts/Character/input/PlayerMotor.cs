@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class PlayerMotor : MonoBehaviour
 {
 
+    private bool isDodging = false;
+
     private bool hasAttackedBefore = false;
 
     public float attackCooldown = 5f;  // Set the cooldown time to 1 second (you can change this value)
@@ -76,6 +78,7 @@ public class PlayerMotor : MonoBehaviour
 
     public void ProcessMove(Vector2 input)
     {
+        if (isDodging) return;
         Vector3 moveDirection = Vector3.zero;
         moveDirection.x = input.x;
         moveDirection.z = input.y;
@@ -124,25 +127,42 @@ public class PlayerMotor : MonoBehaviour
 
     public void Dodge(Vector2 direction)
     {
-        if (isGrounded && currentStamina > 4)
+        if (isGrounded && currentStamina > 4 && !isDodging)
         {
             UseStamina(5);
             Vector3 dodgeDirection = Vector3.zero;
+            isDodging = true;
 
-            // If player is stationary, dodge backward
             if (direction == Vector2.zero)
             {
-                dodgeDirection = -transform.forward; 
+                dodgeDirection = -transform.forward;
             }
             else
             {
-                // Use the direction of movement for dodging
                 dodgeDirection = new Vector3(direction.x, 0, direction.y).normalized;
                 dodgeDirection = transform.TransformDirection(dodgeDirection);
             }
 
-            controller.Move(dodgeDirection * dodgeSpeed * Time.deltaTime);
+            StartCoroutine(SmoothDodge(dodgeDirection, 0.3f));
         }
+    }
+
+    IEnumerator SmoothDodge(Vector3 direction, float duration)
+    {
+        float elapsed = 0f;
+
+        Vector3 startPosition = transform.position;
+        Vector3 endPosition = startPosition + direction * dodgeSpeed * Time.deltaTime;
+
+        while (elapsed < duration)
+        {
+            transform.position = Vector3.Lerp(startPosition, endPosition, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = endPosition;
+        isDodging = false;
     }
 
     public void Sprint(bool sprintState)
