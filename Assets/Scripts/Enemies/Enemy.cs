@@ -23,26 +23,19 @@ public class Enemy : MonoBehaviour
     private Renderer rend;  // For changing color
     private Color originalColor;
 
-    public float headbuttStoppingDistance = 0.1f;  // New variable
+    private Animator anim;
 
     // Start is called before the first frame update
     void Start()
     {
         currentHealth = maxHealth;
-        Rigidbody rb = GetComponent<Rigidbody>();
-        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        if (playerObject != null)
-        {
-            playerMotor = playerObject.GetComponent<PlayerMotor>();
-        }
-        if (rb != null)
-        {
-            rb.isKinematic = true;
-        }
+
         rend = GetComponent<Renderer>();  // For changing color
         originalColor = rend.material.color;
 
         isLeaping = false;
+
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -56,12 +49,15 @@ public class Enemy : MonoBehaviour
             {
                 enemy.isStopped = false;
                 enemy.SetDestination(player.position);
+                anim.SetBool("isWobbling", true); // Start wobble animation
+                anim.SetBool("isPreparing", false);
             }
             else
             {
+                anim.SetBool("isWobbling", false); // Stop wobble animation
+                anim.SetBool("isPreparing", true);
                 enemy.isStopped = true;
                 originalPosition = transform.position;  // Update original position here
-
                 RotateTowardsPlayer();
 
                 if (Time.time >= nextAttackTime)
@@ -76,19 +72,21 @@ public class Enemy : MonoBehaviour
 
 
 
-    
+
 
     IEnumerator HeadbuttAttack()
     {
         isLeaping = true;
-        rend.material.color = Color.blue;  // Turn blue during attack
+        anim.SetTrigger("doAttack");
 
-        Vector3 directionToPlayer = (player.position - transform.position).normalized;
-        Vector3 leapTarget = new Vector3(
-            player.position.x - directionToPlayer.x * headbuttStoppingDistance,
-            transform.position.y,  // Use the Y-coordinate of the enemy itself
-            player.position.z - directionToPlayer.z * headbuttStoppingDistance
-        );
+        Vector3 toPlayer = player.position - transform.position;
+        toPlayer.y = 0;  // Zero out the y component if you only care about horizontal movement
+        float distanceBefore = 1.4f;  // Set your own value for how close "just before" is
+
+        // Normalize the vector so that it has a length of 1, then scale it to your 'distanceBefore'
+        Vector3 leapTarget = player.position - toPlayer.normalized * distanceBefore;
+        leapTarget.y = transform.position.y;
+
 
         Vector3 startPos = transform.position;
 
@@ -97,7 +95,7 @@ public class Enemy : MonoBehaviour
         float startTime = Time.time;
         float journeyLength = Vector3.Distance(startPos, leapTarget);
         float fracJourney = 0;
-
+        
         // Move towards the player
         while (fracJourney < 1)
         {
@@ -119,7 +117,7 @@ public class Enemy : MonoBehaviour
         // Calculate retreat position
         Vector3 retreatPosition = new Vector3(
             transform.position.x - (player.position.x - transform.position.x) * retreatDistance,
-            transform.position.y,  // Use the Y-coordinate of the enemy itself
+            transform.position.y,
             transform.position.z - (player.position.z - transform.position.z) * retreatDistance
         );
 
@@ -140,12 +138,8 @@ public class Enemy : MonoBehaviour
         transform.position = retreatPosition;
 
         enemy.isStopped = false;  // Enable NavMeshAgent again
-        rend.material.color = originalColor;  // Return to original color after attack
         isLeaping = false;
     }
-
-
-
 
 
 
