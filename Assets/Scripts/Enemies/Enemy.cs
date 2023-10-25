@@ -22,7 +22,7 @@ public class Enemy : MonoBehaviour
     private Renderer rend;  // For changing color
     private Color originalColor;
 
-
+    private Animator anim;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +33,8 @@ public class Enemy : MonoBehaviour
         originalColor = rend.material.color;
 
         isLeaping = false;
+
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -46,12 +48,15 @@ public class Enemy : MonoBehaviour
             {
                 enemy.isStopped = false;
                 enemy.SetDestination(player.position);
+                anim.SetBool("isWobbling", true); // Start wobble animation
+                anim.SetBool("isPreparing", false);
             }
             else
             {
+                anim.SetBool("isWobbling", false); // Stop wobble animation
+                anim.SetBool("isPreparing", true);
                 enemy.isStopped = true;
                 originalPosition = transform.position;  // Update original position here
-
                 RotateTowardsPlayer();
 
                 if (Time.time >= nextAttackTime)
@@ -66,15 +71,16 @@ public class Enemy : MonoBehaviour
 
 
 
-  
 
-    IEnumerator HeadbuttAttack(){
+
+    IEnumerator HeadbuttAttack()
+    {
         isLeaping = true;
-        rend.material.color = Color.blue;  // Turn blue during attack
+        anim.SetTrigger("doAttack");
 
         Vector3 toPlayer = player.position - transform.position;
         toPlayer.y = 0;  // Zero out the y component if you only care about horizontal movement
-        float distanceBefore = 1.0f;  // Set your own value for how close "just before" is
+        float distanceBefore = 1.4f;  // Set your own value for how close "just before" is
 
         // Normalize the vector so that it has a length of 1, then scale it to your 'distanceBefore'
         Vector3 leapTarget = player.position - toPlayer.normalized * distanceBefore;
@@ -88,7 +94,7 @@ public class Enemy : MonoBehaviour
         float startTime = Time.time;
         float journeyLength = Vector3.Distance(startPos, leapTarget);
         float fracJourney = 0;
-
+        
         // Move towards the player
         while (fracJourney < 1)
         {
@@ -127,7 +133,6 @@ public class Enemy : MonoBehaviour
         transform.position = retreatPosition;
 
         enemy.isStopped = false;  // Enable NavMeshAgent again
-        rend.material.color = originalColor;  // Return to original color after attack
         isLeaping = false;
     }
 
