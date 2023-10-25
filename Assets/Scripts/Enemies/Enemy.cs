@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
+    public PlayerMotor playerMotor;
     public int maxHealth = 100;
     private int currentHealth;
     public NavMeshAgent enemy;
@@ -108,6 +109,10 @@ public class Enemy : MonoBehaviour
         transform.position = leapTarget;
 
         // Apply damage logic here
+        if (playerMotor != null) // Make sure the playerMotor is not null
+        {
+            playerMotor.TakeDamage(10); // The player takes 10 damage
+        }
 
         // Calculate retreat position
         Vector3 retreatPosition = new Vector3(
@@ -155,4 +160,6 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+
 }

@@ -27,6 +27,7 @@ public class InputManager : MonoBehaviour
         onFoot.Dodge.performed += ctx => motor.Dodge(onFoot.Movement.ReadValue<Vector2>());
         onFoot.Sprint.started += ctx => motor.Sprint(true); // Begin sprinting
         onFoot.Sprint.canceled += ctx => motor.Sprint(false); // Stop sprinting
+        onFoot.Parry.performed += ctx => motor.Parry();
 
         
     }
