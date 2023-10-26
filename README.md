@@ -1,22 +1,40 @@
-# ProjectParry
-souls like game
-unity version  2022.3.15f1
+# Project Parry
 
-# Instruction
+A "Souls-like" game developed with Unity 2023.15f1.
 
--clone https://github.com/Spectre-0/ProjectParry  into a directory
--open unity hub and open the project direccotry [path]/ProjectParry
--Navigate to the project tab in the unity editor and select Assets/Scenes
--Drag Level 1 into the unity Hierarcy and remove any other scenes
--Next press the play button |> to the load into the scene to play the level
+## Installation Instructions
 
-#Game mechanics 
-left click to attack 
-WASD to move 
-hold shift to sprint the direction you are moving 
-tap left-ctr to doge in the directiion you are moving
-tap spacebar to jump
-red  bar is heath and green bar is stamina 
-stamina is drained if you jump , sprint or dodge
+1. **Clone the repository into a directory of your choice:**
 
+    ```
+    git clone https://github.com/Spectre-0/ProjectParry.git
+    ```
 
+2. **Open Unity Hub and navigate to the cloned directory:**
+
+    ```
+    [Your Directory Path]/ProjectParry
+    ```
+
+3. **Open the project in Unity.**
+
+## Running the Game
+
+1. **In the Unity Editor, navigate to the `Project` tab and then `Assets/Scenes`.**
+   
+2. **Drag "Level 1" into the Unity Hierarchy and remove any other scenes that may be there.**
+  
+3. **Press the Play button (▶️) to load the scene and start the level.**
+
+## Game Mechanics
+
+- **Movement**: Use `W`, `A`, `S`, `D` keys to move.
+- **Attack**: Left-click to initiate an attack.
+- **Sprint**: Hold `Shift` to sprint in the direction you are moving.
+- **Dodge**: Tap `Left-Ctrl` to dodge in the direction you are moving.
+- **Jump**: Tap `Spacebar` to jump.
+  
+### HUD Elements
+
+- **Health Bar**: Red bar represents health.
+- **Stamina Bar**: Green bar represents stamina, which is consumed when you sprint, jump, or dodge.
