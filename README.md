@@ -2,7 +2,7 @@
 souls like game
 unity version  2022.3.15f1
 
-#Instruction
+# Instruction
 
 -clone https://github.com/Spectre-0/ProjectParry  into a directory
 -open unity hub and open the project direccotry [path]/ProjectParry
