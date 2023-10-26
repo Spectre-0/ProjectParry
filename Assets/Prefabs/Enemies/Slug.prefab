@@ -2143,6 +2143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba54a4199826aa842873ed5ffdc2c9bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMotor: {fileID: 0}
   maxHealth: 100
   enemy: {fileID: 5551992107329628624}
   player: {fileID: 0}

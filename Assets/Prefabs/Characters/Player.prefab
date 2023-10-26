@@ -337,6 +337,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9e063c89e257464aa4b36f2ad1eee2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isParrying: 0
+  attackCooldown: 0.5
+  swordAnimator: {fileID: 4263566492755483924}
   youDiedText: {fileID: 4635512349492238223}
   maxHealth: 100
   currentHealth: 0
@@ -685,8 +688,38 @@ PrefabInstance:
     - {fileID: 65702495048144492, guid: 1ccb16d283f55f24a9c05ca31667d791, type: 3}
     - {fileID: -8700617353114198275, guid: 1ccb16d283f55f24a9c05ca31667d791, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: -7029948723529949830, guid: 1ccb16d283f55f24a9c05ca31667d791, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4263566492755483924}
   m_SourcePrefab: {fileID: 100100000, guid: 1ccb16d283f55f24a9c05ca31667d791, type: 3}
+--- !u!1 &832154238247619598 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -7029948723529949830, guid: 1ccb16d283f55f24a9c05ca31667d791, type: 3}
+  m_PrefabInstance: {fileID: 1584419616788877684}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &4263566492755483924
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 832154238247619598}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7a23aa1322d28814fbcb9e2f5b9cf5ae, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &1330325791524910751 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1ccb16d283f55f24a9c05ca31667d791, type: 3}

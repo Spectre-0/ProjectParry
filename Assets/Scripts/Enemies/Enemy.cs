@@ -111,6 +111,7 @@ public class Enemy : MonoBehaviour
         // Apply damage logic here
         if (playerMotor != null) // Make sure the playerMotor is not null
         {
+            Debug.Log("Applying damage...");
             playerMotor.TakeDamage(10); // The player takes 10 damage
         }
 
