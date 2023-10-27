@@ -136,6 +136,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slug (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6103924002407639660, guid: 26c474dd926b77941b439ad43851213e, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 141237077}
     - target: {fileID: 7912716073596687730, guid: 26c474dd926b77941b439ad43851213e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.18
@@ -197,6 +201,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slug (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6103924002407639660, guid: 26c474dd926b77941b439ad43851213e, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 141237077}
     - target: {fileID: 7912716073596687730, guid: 26c474dd926b77941b439ad43851213e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.18
@@ -242,6 +250,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26c474dd926b77941b439ad43851213e, type: 3}
+--- !u!4 &141237077 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5861643312054154631, guid: bf73c2db645b6324b942aa5a271a47ab, type: 3}
+  m_PrefabInstance: {fileID: 1156929009}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &164434648
 GameObject:
   m_ObjectHideFlags: 0
@@ -456,6 +469,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slug
       objectReference: {fileID: 0}
+    - target: {fileID: 6103924002407639660, guid: 26c474dd926b77941b439ad43851213e, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 141237077}
     - target: {fileID: 7912716073596687730, guid: 26c474dd926b77941b439ad43851213e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.18
@@ -755,6 +772,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slug (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 6103924002407639660, guid: 26c474dd926b77941b439ad43851213e, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 141237077}
     - target: {fileID: 7912716073596687730, guid: 26c474dd926b77941b439ad43851213e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.18
