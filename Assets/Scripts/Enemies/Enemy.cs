@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
     public PlayerMotor playerMotor;
     public int maxHealth = 100;
     private int currentHealth;
-    private float healthLerpSpeed = 0.01f;
+    private float healthLerpSpeed = 0.05f;
 
     public Slider healthSlider;
     public Slider easeHealthSlider;
