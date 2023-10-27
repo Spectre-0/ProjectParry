@@ -216,6 +216,7 @@ public class PlayerMotor : MonoBehaviour
         Debug.Log("Player losing health, attack blocked");
         currentHealth -= amount * 0.2f; // 80% damage reduction if missed parry but blocked
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
+        RedTintEffect.Instance.PlayerHit();
         if (currentHealth <= 0f)
         {
             Debug.Log("Player is dead");
