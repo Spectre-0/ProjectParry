@@ -483,6 +483,14 @@ PrefabInstance:
       propertyPath: attackCooldown
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1515228873182936079, guid: bf73c2db645b6324b942aa5a271a47ab, type: 3}
+      propertyPath: staminaRegenRate
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1515228873182936079, guid: bf73c2db645b6324b942aa5a271a47ab, type: 3}
+      propertyPath: staminaRegenDelay
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6819805434367493910, guid: bf73c2db645b6324b942aa5a271a47ab, type: 3}
       propertyPath: m_Name
       value: Player
