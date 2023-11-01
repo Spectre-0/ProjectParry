@@ -116,6 +116,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Heal"",
+                    ""type"": ""Button"",
+                    ""id"": ""f3660f06-370d-414d-bbac-a5e3d4195e84"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -426,6 +435,28 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6c2164f7-79b9-46eb-90ac-51e03d1bf8f6"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Heal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""797e09d7-27f1-4a2f-96d8-0b29c6d451b2"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Heal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -444,6 +475,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_OnFoot_Menu = m_OnFoot.FindAction("Menu", throwIfNotFound: true);
         m_OnFoot_Inventory = m_OnFoot.FindAction("Inventory", throwIfNotFound: true);
         m_OnFoot_Interact = m_OnFoot.FindAction("Interact", throwIfNotFound: true);
+        m_OnFoot_Heal = m_OnFoot.FindAction("Heal", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -515,6 +547,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_OnFoot_Menu;
     private readonly InputAction m_OnFoot_Inventory;
     private readonly InputAction m_OnFoot_Interact;
+    private readonly InputAction m_OnFoot_Heal;
     public struct OnFootActions
     {
         private @PlayerInput m_Wrapper;
@@ -529,6 +562,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Menu => m_Wrapper.m_OnFoot_Menu;
         public InputAction @Inventory => m_Wrapper.m_OnFoot_Inventory;
         public InputAction @Interact => m_Wrapper.m_OnFoot_Interact;
+        public InputAction @Heal => m_Wrapper.m_OnFoot_Heal;
         public InputActionMap Get() { return m_Wrapper.m_OnFoot; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -568,6 +602,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @Heal.started += instance.OnHeal;
+            @Heal.performed += instance.OnHeal;
+            @Heal.canceled += instance.OnHeal;
         }
 
         private void UnregisterCallbacks(IOnFootActions instance)
@@ -602,6 +639,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @Heal.started -= instance.OnHeal;
+            @Heal.performed -= instance.OnHeal;
+            @Heal.canceled -= instance.OnHeal;
         }
 
         public void RemoveCallbacks(IOnFootActions instance)
@@ -631,5 +671,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnMenu(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnHeal(InputAction.CallbackContext context);
     }
 }

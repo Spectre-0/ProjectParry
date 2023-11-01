@@ -3,9 +3,52 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;  
 
 public class PlayerMotor : MonoBehaviour
 {
+
+    
+
+    [SerializeField]
+    private int playerMoney = 0;
+
+    [SerializeField]
+    private TextMeshProUGUI moneyText;
+
+    
+    [SerializeField]
+
+
+    private int NumberOfHeals = 5;
+
+    [SerializeField]
+    private TextMeshProUGUI NumberOfHealsText;
+
+    public void Heal()
+    {
+        if (NumberOfHeals > 0 && currentHealth < maxHealth)
+        {
+            Debug.Log("Player is healing");
+            currentHealth += 20;
+            //currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth); 
+            NumberOfHeals -= 1;
+            UpdateNumberOfHealsDisplay();
+        }
+    }
+
+    private void UpdateNumberOfHealsDisplay()
+    {
+        NumberOfHealsText.text = NumberOfHeals.ToString();
+    }
+
+
+    private void UpdateMoneyDisplay()
+    {
+        moneyText.text = playerMoney.ToString();
+    }
+
+    public float maxDodgeDistance = 5f;  // Set your desired max dodge distance here
 
     private float lastStaminaUseTime = 0f; // The time when the player last used stamina
 
@@ -73,6 +116,9 @@ public class PlayerMotor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     { 
+        UpdateNumberOfHealsDisplay();
+
+        UpdateMoneyDisplay();
         currentHealth = maxHealth;
         currentStamina = maxStamina;
         
@@ -179,28 +225,29 @@ public class PlayerMotor : MonoBehaviour
                 dodgeDirection = transform.TransformDirection(dodgeDirection);
             }
 
-            StartCoroutine(SmoothDodge(dodgeDirection, 0.3f));
+            StartCoroutine(SmoothDodge(dodgeDirection, 0.1f));
         }
     }
 
     IEnumerator SmoothDodge(Vector3 direction, float duration)
     {
         float elapsed = 0f;
-
-        Vector3 startPosition = transform.position;
-        Vector3 endPosition = startPosition + direction * dodgeSpeed * Time.deltaTime;
+        float totalDodgeDistance = dodgeSpeed * duration;
+        totalDodgeDistance = Mathf.Min(totalDodgeDistance, maxDodgeDistance);  // Limit the dodge distance
 
         while (elapsed < duration)
         {
-            transform.position = Vector3.Lerp(startPosition, endPosition, elapsed / duration);
+            float fractionOfTime = Time.deltaTime / duration;
+            float distanceThisFrame = fractionOfTime * totalDodgeDistance;
+
+            controller.Move(direction * distanceThisFrame);
             elapsed += Time.deltaTime;
+            
             yield return null;
         }
 
-        transform.position = endPosition;
         isDodging = false;
     }
-
     public void Sprint(bool sprintState)
     {
         if (sprintState && currentStamina > 0)  // Only set sprinting to true if there's enough stamina
@@ -246,7 +293,7 @@ public class PlayerMotor : MonoBehaviour
         
         Debug.Log("Player losing health, attack blocked");
         currentHealth -= amount * 0.2f; // 80% damage reduction if missed parry but blocked
-        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth); // Clamp health to 0 and maxHealth
         RedTintEffect.Instance.PlayerHit();
         if (currentHealth <= 0f)
         {
@@ -279,6 +326,13 @@ public class PlayerMotor : MonoBehaviour
         lastStaminaUseTime = Time.time;  // Record the last time stamina was used
     }
     
+
+    public void AddMoney(int amount)
+    {
+        playerMoney += amount;
+        UpdateMoneyDisplay();
+        Debug.Log("Player has " + playerMoney + " money");
+    }
 
 
 }

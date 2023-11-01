@@ -28,6 +28,8 @@ public class InputManager : MonoBehaviour
         onFoot.Sprint.started += ctx => motor.Sprint(true); // Begin sprinting
         onFoot.Sprint.canceled += ctx => motor.Sprint(false); // Stop sprinting
         onFoot.Parry.performed += ctx => motor.Parry();
+        onFoot.Heal.performed += ctx => motor.Heal();
+        
 
         
     }

@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
+
+    public int EnemeyLoot = 100;
     public PlayerMotor playerMotor;
     public int maxHealth = 100;
     private int currentHealth;
@@ -116,18 +118,18 @@ public class Enemy : MonoBehaviour
 
         // Proximity check
         bool isTooClose = distanceToPlayer <= 10.0f;
-        Debug.Log("Checking for player...");
+        //Debug.Log("Checking for player...");
         if (isInFOV || isTooClose)
         {
             RaycastHit hit;
             float raycastDistance = isInFOV ? maxDetectionDistance : 10.0f; // Use the appropriate distance based on the condition that was met
 
-            Debug.Log("Player is in FOV or too close.");
+            //Debug.Log("Player is in FOV or too close.");
             
 
             if (Physics.Raycast(transform.position + transform.up, directionToPlayer.normalized, out hit, raycastDistance))
             {
-                Debug.Log("Raycast hit: " + hit.collider.gameObject.name);
+                //Debug.Log("Raycast hit: " + hit.collider.gameObject.name);
                 Debug.DrawLine(transform.position + transform.up, hit.point, Color.green, 2f);
                 if (hit.collider.gameObject == player.gameObject)
                 {
@@ -241,6 +243,7 @@ public class Enemy : MonoBehaviour
 
     void DestroyObject()
     {
+        GetEnemyLoot();
         Destroy(gameObject);
     }
 
@@ -265,5 +268,11 @@ public class Enemy : MonoBehaviour
             }
         }
 
+    }
+
+    // return enemy loot 
+    public void GetEnemyLoot()
+    {
+        player.GetComponent<PlayerMotor>().AddMoney(EnemeyLoot);
     }
 }
