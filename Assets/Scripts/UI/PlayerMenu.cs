@@ -15,16 +15,22 @@ public class PlayerMenu : MonoBehaviour
 
     public void Restart()
     {
-        Debug.Log("Restarting");
-        // restart the level without scene manager
+        //restasrt the  cuurent scene
+
         Application.LoadLevel(Application.loadedLevel);
+
+        // unpause the game
+        Time.timeScale = 1;
+            
 
         
     }
 
-    public void QuitGame()
+    public void ExitToMainMenu()
     {
-        Application.Quit();
+        Debug.Log("Exiting to main menu");
+        // load the main menu scene
+        Application.LoadLevel(0);
     }
 
     public void ShowPlayerMenu()
