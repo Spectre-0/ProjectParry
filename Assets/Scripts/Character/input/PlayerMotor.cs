@@ -10,6 +10,51 @@ public class PlayerMotor : MonoBehaviour
 
     
 
+    public GameObject pauseMenuUI; // Attach your pause menu UI in the inspector
+
+    public GameObject Game;
+
+    private bool isGamePaused = false;
+
+
+
+    public void TogglePause()
+    {
+        isGamePaused = !isGamePaused; // Toggle the state of isGamePaused
+
+        if (isGamePaused)
+        {
+            ActivatePauseMenu();
+        }
+        else
+        {
+            DeactivatePauseMenu();
+        }
+    }
+
+    private void ActivatePauseMenu()
+    {
+        
+        pauseMenuUI.SetActive(true); // Show the pause menu
+        Time.timeScale = 0f; // Pause the game
+
+        // Unlock the cursor and make it visible
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    private void DeactivatePauseMenu()
+    {
+       
+        pauseMenuUI.SetActive(false); // Hide the pause menu
+        Time.timeScale = 1f; // Resume the game
+
+        // Lock the cursor to the center of the screen and hide it
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+    
+
     [SerializeField]
     private int playerMoney = 0;
 
@@ -250,7 +295,7 @@ public class PlayerMotor : MonoBehaviour
     }
     public void Sprint(bool sprintState)
     {
-        if (sprintState && currentStamina > 0)  // Only set sprinting to true if there's enough stamina
+        if (sprintState && currentStamina > 0 && isGrounded == true)  // Only set sprinting to true if there's enough stamina
         {
             isSprinting = true;
             currentSpeed = speed * sprintMultiplier;
@@ -333,6 +378,7 @@ public class PlayerMotor : MonoBehaviour
         UpdateMoneyDisplay();
         Debug.Log("Player has " + playerMoney + " money");
     }
+
 
 
 }

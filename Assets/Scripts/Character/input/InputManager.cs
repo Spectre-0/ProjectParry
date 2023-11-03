@@ -29,6 +29,7 @@ public class InputManager : MonoBehaviour
         onFoot.Sprint.canceled += ctx => motor.Sprint(false); // Stop sprinting
         onFoot.Parry.performed += ctx => motor.Parry();
         onFoot.Heal.performed += ctx => motor.Heal();
+        onFoot.Menu.performed += ctx => motor.TogglePause();
         
 
         
