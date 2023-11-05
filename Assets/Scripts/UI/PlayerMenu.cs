@@ -29,6 +29,9 @@ public class PlayerMenu : MonoBehaviour
     public void ExitToMainMenu()
     {
         Debug.Log("Exiting to main menu");
+        // unpause the game
+        Time.timeScale = 1;
+        
         // load the main menu scene
         Application.LoadLevel(0);
     }

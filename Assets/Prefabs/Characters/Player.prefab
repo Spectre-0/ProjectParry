@@ -625,6 +625,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9e063c89e257464aa4b36f2ad1eee2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseMenuUI: {fileID: 0}
+  Game: {fileID: 0}
   playerMoney: 0
   moneyText: {fileID: 467972667188854799}
   NumberOfHeals: 5
@@ -1351,10 +1353,6 @@ PrefabInstance:
     - target: {fileID: 3342053081902248157, guid: a8b1c348dcd3ac2488179072813cdd4b, type: 3}
       propertyPath: m_Name
       value: Main Camera
-      objectReference: {fileID: 0}
-    - target: {fileID: 4360649317177958623, guid: a8b1c348dcd3ac2488179072813cdd4b, type: 3}
-      propertyPath: field of view
-      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

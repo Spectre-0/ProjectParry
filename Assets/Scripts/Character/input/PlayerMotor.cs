@@ -35,7 +35,10 @@ public class PlayerMotor : MonoBehaviour
     private void ActivatePauseMenu()
     {
         
-        pauseMenuUI.SetActive(true); // Show the pause menu
+        
+        pauseMenuUI.SetActive(true);
+        pauseMenuUI.GetComponent<PlayerMenu>().ShowPlayerMenu();
+        //make sure that the pause menu is 
         Time.timeScale = 0f; // Pause the game
 
         // Unlock the cursor and make it visible
