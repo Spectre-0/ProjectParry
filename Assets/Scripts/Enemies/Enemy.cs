@@ -20,6 +20,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Slider healthSlider;
     [SerializeField] private Slider easeHealthSlider;
     private float healthLerpSpeed = 0.05f;
+    public int EnemeyLoot = 100;
 
     [Header("Attack Parameters")]
     [SerializeField] private float stoppingDistance = 1.5f;
@@ -279,9 +280,13 @@ public class Enemy : MonoBehaviour
     private void DestroyObject()
     {
         slugHitbox.OnPlayerHit -= HandlePlayerHit;
+        GetEnemyLoot();
         Destroy(gameObject);
     }
-
+    public void GetEnemyLoot()
+    {
+        player.GetComponent<PlayerMotor>().AddMoney(EnemeyLoot);
+    }
     private IEnumerator ShowHit(bool death)
     {
         foreach (Renderer r in renderers)
