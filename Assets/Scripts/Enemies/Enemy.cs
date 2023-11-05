@@ -43,6 +43,10 @@ public class Enemy : MonoBehaviour
 
     private bool death = false;
 
+    public int enemyValue = 200;
+
+    
+
     private void Start()
     {
         currentHealth = maxHealth;
@@ -279,6 +283,7 @@ public class Enemy : MonoBehaviour
     private void DestroyObject()
     {
         slugHitbox.OnPlayerHit -= HandlePlayerHit;
+        player.GetComponent<PlayerMotor>().AddMoney(enemyValue);
         Destroy(gameObject);
     }
 
@@ -300,4 +305,6 @@ public class Enemy : MonoBehaviour
             }
         }
     }
+
+
 }
