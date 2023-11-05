@@ -3,9 +3,117 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;  
 
 public class PlayerMotor : MonoBehaviour
 {
+
+    
+
+    public GameObject pauseMenuUI; // Attach your pause menu UI in the inspector
+
+    public GameObject Game;
+
+    private bool isGamePaused = false;
+
+
+
+    public void TogglePause()
+    {
+        isGamePaused = !isGamePaused; // Toggle the state of isGamePaused
+
+        if (isGamePaused)
+        {
+            ActivatePauseMenu();
+        }
+        else
+        {
+            DeactivatePauseMenu();
+        }
+    }
+
+    private void ActivatePauseMenu()
+    {
+        
+        
+        pauseMenuUI.SetActive(true);
+        pauseMenuUI.GetComponent<PlayerMenu>().ShowPlayerMenu();
+        //make sure that the pause menu is 
+        Time.timeScale = 0f; // Pause the game
+
+        // Unlock the cursor and make it visible
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    private void DeactivatePauseMenu()
+    {
+       
+        pauseMenuUI.SetActive(false); // Hide the pause menu
+        Time.timeScale = 1f; // Resume the game
+
+        // Lock the cursor to the center of the screen and hide it
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+    
+
+    [SerializeField]
+    private int playerMoney = 0;
+
+    [SerializeField]
+    private TextMeshProUGUI moneyText;
+
+    
+    [SerializeField]
+
+
+    private int NumberOfHeals = 5;
+
+    [SerializeField]
+    private TextMeshProUGUI NumberOfHealsText;
+
+    public void Heal()
+    {
+        if (NumberOfHeals > 0 && currentHealth < maxHealth)
+        {
+            Debug.Log("Player is healing");
+            currentHealth += 20;
+            //currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth); 
+            NumberOfHeals -= 1;
+            UpdateNumberOfHealsDisplay();
+        }
+    }
+
+    private void UpdateNumberOfHealsDisplay()
+    {
+        NumberOfHealsText.text = NumberOfHeals.ToString();
+    }
+
+
+    private void UpdateMoneyDisplay()
+    {
+        moneyText.text = playerMoney.ToString();
+    }
+
+    public float maxDodgeDistance = 5f;  // Set your desired max dodge distance here
+
+    private float lastStaminaUseTime = 0f; // The time when the player last used stamina
+
+    public float staminaRegenDelay = 2.0f;  // 2-second delay before stamina starts regenerating
+
+
+    public float SprintStaminaCost = 20f;
+
+    public float DogeStaminaCost = 10f;
+
+    public float ParryStaminaCost = 14f;
+
+    public float AttackStaminaCost = 14f;
+
+    public float staminaRegenRate = 100f; // The rate at which stamina regenerates per second
+
+    public float JumpStaminaCost = 10f;
 
     public bool isParrying = false;
     private float parryCooldown = 2.0f; // 2-second cooldown for the parry
@@ -32,7 +140,7 @@ public class PlayerMotor : MonoBehaviour
     public float maxStamina = 100f;
     public float currentStamina;
 
-    public float staminaRegenRate = 5f; // The rate at which stamina regenerates per second
+
 
     public float speed = 5f;
     public float sprintMultiplier = 4f; // How much faster the player will sprint
@@ -56,6 +164,9 @@ public class PlayerMotor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     { 
+        UpdateNumberOfHealsDisplay();
+
+        UpdateMoneyDisplay();
         currentHealth = maxHealth;
         currentStamina = maxStamina;
         
@@ -67,15 +178,29 @@ public class PlayerMotor : MonoBehaviour
     void Update()
     {
         isGrounded = controller.isGrounded;
-        if (currentStamina < maxStamina)
+
+        if (Time.time - lastStaminaUseTime >= staminaRegenDelay)  // Check if enough time has passed
         {
-            currentStamina += staminaRegenRate * Time.deltaTime;
+            if (currentStamina < maxStamina)
+            {
+                currentStamina += staminaRegenRate * Time.deltaTime;
+            }
         }
         
-        // Add this block to handle constant stamina drain while sprinting
+        if (currentStamina <= 0)
+        {
+            isSprinting = false; // Turn off sprinting if stamina is zero
+        }
+
         if (isSprinting && currentStamina > 0)
         {
-            UseStamina(10 * Time.deltaTime); // Drain 10 stamina units per second
+            UseStamina(SprintStaminaCost * Time.deltaTime); // Drain 10 stamina units per second
+        }
+
+        if (isSprinting && currentStamina <= 0)
+        {
+            isSprinting = false;  // Add this line to stop sprinting if stamina reaches zero
+            currentSpeed = speed; // Reset speed back to normal
         }
     }
 
@@ -102,7 +227,7 @@ public class PlayerMotor : MonoBehaviour
         if(isGrounded)
         {
             plaryVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            UseStamina(10); 
+            UseStamina(JumpStaminaCost); 
         }
     }
 
@@ -115,7 +240,7 @@ public class PlayerMotor : MonoBehaviour
             lastAttackTime = currentTime;  // Update the last attack time
             hasAttackedBefore = true;  // Update the flag since the player has now attacked
             
-            UseStamina(2);  // Use 2 units of staminaa
+            UseStamina(AttackStaminaCost);  // Use stamina
 
             // Trigger the sword swinging animation
             swordAnimator.SetTrigger("Swing");
@@ -134,7 +259,7 @@ public class PlayerMotor : MonoBehaviour
     {
         if (isGrounded && currentStamina > 4 && !isDodging)
         {
-            UseStamina(5);
+            UseStamina(DogeStaminaCost);
             Vector3 dodgeDirection = Vector3.zero;
             isDodging = true;
 
@@ -148,38 +273,39 @@ public class PlayerMotor : MonoBehaviour
                 dodgeDirection = transform.TransformDirection(dodgeDirection);
             }
 
-            StartCoroutine(SmoothDodge(dodgeDirection, 0.3f));
+            StartCoroutine(SmoothDodge(dodgeDirection, 0.1f));
         }
     }
 
     IEnumerator SmoothDodge(Vector3 direction, float duration)
     {
         float elapsed = 0f;
-
-        Vector3 startPosition = transform.position;
-        Vector3 endPosition = startPosition + direction * dodgeSpeed * Time.deltaTime;
+        float totalDodgeDistance = dodgeSpeed * duration;
+        totalDodgeDistance = Mathf.Min(totalDodgeDistance, maxDodgeDistance);  // Limit the dodge distance
 
         while (elapsed < duration)
         {
-            transform.position = Vector3.Lerp(startPosition, endPosition, elapsed / duration);
+            float fractionOfTime = Time.deltaTime / duration;
+            float distanceThisFrame = fractionOfTime * totalDodgeDistance;
+
+            controller.Move(direction * distanceThisFrame);
             elapsed += Time.deltaTime;
+            
             yield return null;
         }
 
-        transform.position = endPosition;
         isDodging = false;
     }
-
     public void Sprint(bool sprintState)
     {
-        isSprinting = sprintState;
-
-        if (isSprinting)
+        if (sprintState && currentStamina > 0 && isGrounded == true)  // Only set sprinting to true if there's enough stamina
         {
+            isSprinting = true;
             currentSpeed = speed * sprintMultiplier;
         }
         else
         {
+            isSprinting = false;
             currentSpeed = speed;
         }
     }
@@ -215,7 +341,7 @@ public class PlayerMotor : MonoBehaviour
         
         Debug.Log("Player losing health, attack blocked");
         currentHealth -= amount * 0.2f; // 80% damage reduction if missed parry but blocked
-        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth); // Clamp health to 0 and maxHealth
         RedTintEffect.Instance.PlayerHit();
         if (currentHealth <= 0f)
         {
@@ -245,9 +371,17 @@ public class PlayerMotor : MonoBehaviour
     {
         currentStamina -= amount;
         currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
+        lastStaminaUseTime = Time.time;  // Record the last time stamina was used
+    }
+    
+
+    public void AddMoney(int amount)
+    {
+        playerMoney += amount;
+        UpdateMoneyDisplay();
+        Debug.Log("Player has " + playerMoney + " money");
     }
 
-    
 
 
 }
