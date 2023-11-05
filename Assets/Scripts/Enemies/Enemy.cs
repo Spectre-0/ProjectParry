@@ -1,228 +1,256 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using System.Collections.Generic;
+using System.Collections;
+using Unity.VisualScripting;
 
 public class Enemy : MonoBehaviour
 {
-
-    public int EnemeyLoot = 100;
-    public PlayerMotor playerMotor;
-    public int maxHealth = 100;
-    private int currentHealth;
-    private float healthLerpSpeed = 0.05f;
-
-    public Slider healthSlider;
-    public Slider easeHealthSlider;
-
-    public Transform hitboxPos;
-    public NavMeshAgent enemy;
+    [Header("References")]
+    private NavMeshAgent enemy;
     public Transform player;
-    public float stoppingDistance = 1.5f;
-    public float attackCooldown = 2.0f;
-    public float leapDistance = 2.0f;
-    public float rotationSpeed = 5.0f;
-    public float attackSpeed = 5.0f;
-    private float nextAttackTime;
-    public float retreatDistance = 0.5f; // Add this variable at the top with your other public variables
-
-    public GameObject attackHitboxPrefab;
-    public float attackDistance = 1.0f;
-
-    private Vector3 originalPosition;
-    private bool isLeaping;
-    private Renderer[] renderers;  // For changing color
-    private Dictionary<Renderer, Color> originalColors = new Dictionary<Renderer, Color>();
-    private Color originalColor;
-
     private Animator anim;
+    private Renderer[] renderers;
+    private Dictionary<Renderer, Color> originalColors = new Dictionary<Renderer, Color>();
 
-    public float fovAngle = 110f;
+    [Header("Health Parameters")]
+    [SerializeField] private int maxHealth = 100;
+    private int currentHealth;
+    [SerializeField] private Slider healthSlider;
+    [SerializeField] private Slider easeHealthSlider;
+    private float healthLerpSpeed = 0.05f;
+    public int EnemeyLoot = 100;
+
+    [Header("Attack Parameters")]
+    [SerializeField] private float stoppingDistance = 1.5f;
+    [SerializeField] private float attackCooldown = 2.0f;
+    [SerializeField] private float attackSpeed = 5.0f;
+    private float nextAttackTime;
+    private bool isLeaping;
+    [SerializeField] private GameObject attackHitboxPrefab;
+    [SerializeField] private Transform hitboxPos;
+    private Vector3 originalPosition;
+    private Vector3 playerPosition;
+    private bool didHitPlayer = false;
+    private EnemyHitbox slugHitbox;
+    private Collider hitboxCollider;
+    private bool firstAttackDone = false;
+
+    [Header("Detection Parameters")]
+    [SerializeField] private float fovAngle = 110f;
     private bool playerInSight;
-    public float maxDetectionDistance = 10f;
+    [SerializeField] private float maxDetectionDistance = 10f;
 
     private bool death = false;
-    // Start is called before the first frame update
-    void Start()
+
+    private void Start()
     {
         currentHealth = maxHealth;
-
-        renderers = GetComponentsInChildren<Renderer>();  // For changing color
+        renderers = GetComponentsInChildren<Renderer>();
         foreach (Renderer r in renderers)
         {
             originalColors[r] = r.material.color;
         }
-        isLeaping = false;
-
+        enemy = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
+        slugHitbox = GetComponentInChildren<EnemyHitbox>();
+        hitboxCollider = slugHitbox.GetComponent<Collider>();
+        // Subscribe to the event
+        slugHitbox.OnPlayerHit += HandlePlayerHit;
+
+        hitboxCollider.enabled = false;
+        isLeaping = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
+        UpdateHealthUI();
+        CheckForPlayerInFOV();
+        if (anim.GetBool("isWobbling") == false)
+        {
+            anim.SetBool("idleWobble", true);
+        }
+        if (playerInSight && !death && !isLeaping)
+        {
+            HandleSlugBehavior();
+        }
+    }
 
-
-        if(healthSlider.value != currentHealth)
+    private void UpdateHealthUI()
+    {
+        if (healthSlider.value != currentHealth)
         {
             healthSlider.value = currentHealth;
         }
 
-        if(healthSlider.value != easeHealthSlider.value)
+        if (healthSlider.value != easeHealthSlider.value)
         {
             easeHealthSlider.value = Mathf.Lerp(easeHealthSlider.value, currentHealth, healthLerpSpeed);
         }
-        CheckForPlayerInFOV();
-        if (playerInSight && !death)
-        {
-            if (!isLeaping)
-            {
-                float distance = Vector3.Distance(player.position, transform.position);
-
-                if (distance > stoppingDistance)
-                {
-                    enemy.isStopped = false;
-                    enemy.SetDestination(player.position);
-                    anim.SetBool("isWobbling", true); // Start wobble animation
-                    anim.SetBool("isPreparing", false);
-                }
-                else
-                {
-                    anim.SetBool("isWobbling", false); // Stop wobble animation
-                    anim.SetBool("isPreparing", true);
-                    enemy.isStopped = true;
-                    originalPosition = transform.position;  // Update original position here
-                    RotateTowardsPlayer();
-
-                    if (Time.time >= nextAttackTime)
-                    {
-                        RotateTowardsPlayer();
-                        StartCoroutine(HeadbuttAttack());
-                        nextAttackTime = Time.time + attackCooldown;
-                    }
-                }
-            }
-        }
     }
 
-
-
-    void CheckForPlayerInFOV()
+    private void CheckForPlayerInFOV()
     {
         Vector3 directionToPlayer = player.position - transform.position;
-        float angleBetweenEnemyAndPlayer = Vector3.Angle(directionToPlayer, transform.forward);
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        float angle = Vector3.Angle(directionToPlayer, transform.forward);
+        float distance = Vector3.Distance(transform.position, player.position);
 
-        // Check for player in FOV
-        bool isInFOV = angleBetweenEnemyAndPlayer < fovAngle * 0.5f && distanceToPlayer <= maxDetectionDistance;
-
-        // Proximity check
-        bool isTooClose = distanceToPlayer <= 10.0f;
-        //Debug.Log("Checking for player...");
-        if (isInFOV || isTooClose)
+        if ((angle < fovAngle * 0.5f && distance <= maxDetectionDistance) || distance <= 10.0f)
         {
             RaycastHit hit;
-            float raycastDistance = isInFOV ? maxDetectionDistance : 10.0f; // Use the appropriate distance based on the condition that was met
-
-            //Debug.Log("Player is in FOV or too close.");
-            
-
-            if (Physics.Raycast(transform.position + transform.up, directionToPlayer.normalized, out hit, raycastDistance))
+            if (Physics.Raycast(transform.position + transform.up, directionToPlayer.normalized, out hit, maxDetectionDistance) &&
+                hit.collider.gameObject == player.gameObject)
             {
-                //Debug.Log("Raycast hit: " + hit.collider.gameObject.name);
-                Debug.DrawLine(transform.position + transform.up, hit.point, Color.green, 2f);
-                if (hit.collider.gameObject == player.gameObject)
-                {
-
-                    playerInSight = true;
-                    return; // Exit early since the player is detected
-                }
+                playerInSight = true;
+                return;
             }
         }
-        // If the code reaches here, the player is not in sight
+        firstAttackDone = false;
         playerInSight = false;
     }
 
 
-    IEnumerator HeadbuttAttack()
+    private void HandleSlugBehavior()
     {
-        if (!death) { 
+        float distance = Vector3.Distance(player.position, transform.position);
+
+        RotateTowardsPlayer();
+        if (distance > stoppingDistance && playerInSight)
+        {
+
+            enemy.isStopped = false;
+            enemy.SetDestination(player.position);
+            Debug.Log("Moving");
+            anim.SetBool("isWobbling", true);
+            anim.SetBool("idleWobble", false);
+        }
+        else
+        {
+            anim.SetBool("isWobbling", false);
+            enemy.isStopped = true;
+            originalPosition = transform.position;
+            if (!firstAttackDone)
+            {
+                Debug.Log("First Attack");
+                StartCoroutine(FirstAttackDelay());
+            }
+            if (!isLeaping && firstAttackDone)
+            {
+                if (Time.time >= nextAttackTime)
+                {
+                   
+                    StartCoroutine(HeadbuttAttack());
+                    nextAttackTime = Time.time + attackCooldown;
+                }
+            }
+        }
+        anim.SetBool("isWobbling", true);
+    }
+
+    IEnumerator FirstAttackDelay()
+    {
+        yield return new WaitForSeconds(0.75f);
+        firstAttackDone = true;
+    }
+
+    IEnumerator HeadbuttAttack()
+{
+        if (!death)
+        {
             isLeaping = true;
-            anim.SetTrigger("doAttack");
 
-            Vector3 toPlayer = player.position - transform.position;
-            toPlayer.y = 0;  // Zero out the y component if you only care about horizontal movement
-            float distanceBefore = 1.4f;  // Set your own value for how close "just before" is
+            float prepareDistance = 2.0f;
 
-            // Normalize the vector so that it has a length of 1, then scale it to your 'distanceBefore'
-            Vector3 leapTarget = player.position - toPlayer.normalized * distanceBefore;
-            leapTarget.y = transform.position.y;
+            Vector3 direction = (player.position - transform.position).normalized;
+            Quaternion targetRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
 
+            Vector3 retreatDirection = -transform.forward;
+            retreatDirection.y = 0;
+            retreatDirection.Normalize();
+            float adjustedPrepareDistance = CheckRetreatDistance(retreatDirection, prepareDistance);
+            Vector3 retreatPosition = transform.position + retreatDirection * adjustedPrepareDistance;
+
+
+            float retreatSpeed = 0.05f;
+            float fracJourney = 0;
+            float threshold = 0.1f;
+            while (Vector3.Distance(transform.position, retreatPosition) > threshold)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 25.0f);
+
+                transform.position = Vector3.Lerp(transform.position, retreatPosition, fracJourney);
+
+                fracJourney += retreatSpeed * Time.deltaTime;  
+                yield return null;
+            }
+
+            yield return new WaitForSeconds(0.2f);
+
+
+            hitboxCollider.enabled = true;
+
+
+            Vector3 leapTarget = transform.position + transform.forward * (stoppingDistance + prepareDistance);
 
             Vector3 startPos = transform.position;
-
-            enemy.isStopped = true;  // Disable NavMeshAgent temporarily
-
             float startTime = Time.time;
-            float journeyLength = Vector3.Distance(startPos, leapTarget);
-            float fracJourney = 0;
-
-            // Move towards the player
+            float journeyLength = stoppingDistance;
+            fracJourney = 0;
+            anim.SetTrigger("doAttack");
+            // Leap towards the player
             while (fracJourney < 1)
             {
+
+                if (didHitPlayer)
+                {
+                    hitboxCollider.enabled = false;
+                    break;
+                }
+
                 float distCovered = (Time.time - startTime) * attackSpeed;
                 fracJourney = distCovered / journeyLength;
                 transform.position = Vector3.Lerp(startPos, leapTarget, fracJourney);
                 yield return null;
             }
-
-            // Make sure you've reached the target to avoid "shaking"
-            transform.position = leapTarget;
-
-            // Create a hitbox in front of the player
-            Vector3 attackPosition = hitboxPos.position;
-            GameObject hitbox = Instantiate(attackHitboxPrefab, attackPosition, transform.rotation);
-
-
-            // Destroy the hitbox after a short time (e.g., 0.5 seconds)
-            Destroy(hitbox, 0.2f);
-
-            // Calculate retreat position
-            Vector3 retreatPosition = new Vector3(
-                transform.position.x - (player.position.x - transform.position.x) * retreatDistance,
-                transform.position.y,
-                transform.position.z - (player.position.z - transform.position.z) * retreatDistance
-            );
-
-            startTime = Time.time;
-            journeyLength = Vector3.Distance(leapTarget, retreatPosition);
-            fracJourney = 0;
-
-            // Move back a bit
-            while (fracJourney < 1)
+            anim.SetTrigger("StopAttack");
+            if (didHitPlayer)
             {
-                float distCovered = (Time.time - startTime) * attackSpeed;
-                fracJourney = distCovered / journeyLength;
-                transform.position = Vector3.Lerp(leapTarget, retreatPosition, fracJourney);
-                yield return null;
+                didHitPlayer = false;
             }
 
-            // Make sure you've reached the retreat position
-            transform.position = retreatPosition;
 
-            enemy.isStopped = false;  // Enable NavMeshAgent again
+            enemy.Warp(transform.position); 
+            enemy.isStopped = false;
+            hitboxCollider.enabled = false;
             isLeaping = false;
+            anim.SetBool("isWobbling", true);
         }
+}
+
+    float CheckRetreatDistance(Vector3 retreatDirection, float originalDistance)
+    {
+        RaycastHit hit;
+        int layerMask = ~LayerMask.GetMask("Enemy");
+        if (Physics.Raycast(transform.position, retreatDirection, out hit, originalDistance+3.0f, layerMask))
+        {
+            return hit.distance - 3.0f;  
+        }
+        return originalDistance; 
     }
 
 
+    private void HandlePlayerHit()
+    {
+        didHitPlayer = true;
+    }
 
 
-    void RotateTowardsPlayer()
+    private void RotateTowardsPlayer()
     {
         Vector3 direction = (player.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5.0f);
     }
 
     public void TakeDamage(int damage)
@@ -230,25 +258,36 @@ public class Enemy : MonoBehaviour
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
-            death = true;
-            StartCoroutine(ShowHit());
-            Animator anim = GetComponent<Animator>();
-            anim.SetTrigger("Die");
-
-            float animationLength = anim.runtimeAnimatorController.animationClips[3].length;
-            Invoke("DestroyObject", animationLength);
+            Die();
+        } else
+        {
+            StartCoroutine(ShowHit(false));
         }
-        StartCoroutine(ShowHit());
+        
+
     }
 
-    void DestroyObject()
+    private void Die()
     {
+        death = true;
+        
+        anim.SetTrigger("Die");
+        StartCoroutine(ShowHit(true));
+        float animationLength = anim.runtimeAnimatorController.animationClips[2].length;
+        Invoke("DestroyObject", animationLength);
+    }
+
+    private void DestroyObject()
+    {
+        slugHitbox.OnPlayerHit -= HandlePlayerHit;
         GetEnemyLoot();
         Destroy(gameObject);
     }
-
-
-    IEnumerator ShowHit()
+    public void GetEnemyLoot()
+    {
+        player.GetComponent<PlayerMotor>().AddMoney(EnemeyLoot);
+    }
+    private IEnumerator ShowHit(bool death)
     {
         foreach (Renderer r in renderers)
         {
@@ -257,8 +296,6 @@ public class Enemy : MonoBehaviour
         if (!death)
         {
             yield return new WaitForSeconds(0.1f);
-
-            // Revert back to original colors
             foreach (Renderer r in renderers)
             {
                 if (originalColors.ContainsKey(r))
@@ -267,12 +304,5 @@ public class Enemy : MonoBehaviour
                 }
             }
         }
-
-    }
-
-    // return enemy loot 
-    public void GetEnemyLoot()
-    {
-        player.GetComponent<PlayerMotor>().AddMoney(EnemeyLoot);
     }
 }
