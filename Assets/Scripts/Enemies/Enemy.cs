@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 
 public class Enemy : MonoBehaviour
 {
+    
     [Header("References")]
     private NavMeshAgent enemy;
     public Transform player;

@@ -9,12 +9,65 @@ public class PlayerMotor : MonoBehaviour
 {
 
     
-
+    // Gameplay UI References
     public GameObject pauseMenuUI; // Attach your pause menu UI in the inspector
+    public GameObject Game; // Attach your Game object in the inspector
+    public GameObject youDiedText; // Attach your "You Died" UI Text element here in the inspector
 
-    public GameObject Game;
-
+    // Player Status Flags
     private bool isGamePaused = false;
+    private bool isParrying = false;
+    private bool isDodging = false;
+    private bool hasAttackedBefore = false;
+    private bool isSprinting = false;
+    private bool isGrounded;
+
+    // Player Stats
+    public float maxHealth = 100f;
+    public float currentHealth;
+    public float maxStamina = 100f;
+    public float currentStamina;
+
+    // Player Movement & Actions
+    public float speed = 5f;
+    public float sprintMultiplier = 2f; // How much faster the player will sprint
+    public float dodgeSpeed = 500f;  // How fast the player will dodge
+    private float currentSpeed;
+    public float jumpHeight = 3f;
+
+    // Stamina Parameters
+    public float staminaRegenRate = 100f; // Stamina regenerates per second
+    public float staminaRegenDelay = 2.0f;  // Delay before stamina starts regenerating
+    private float lastStaminaUseTime = 0f; // Time when the player last used stamina
+
+    // Stamina Costs
+    public float SprintStaminaCost = 20f;
+    public float DodgeStaminaCost = 10f;
+    public float ParryStaminaCost = 14f;
+    public float AttackStaminaCost = 14f;
+    public float JumpStaminaCost = 10f;
+
+    // Cooldowns & Timers
+    private float parryCooldown = 2.0f; // Cooldown for the parry
+    private float lastParryTime = 0f;
+    public float attackCooldown = 5f;  // Cooldown time for the attack
+    private float lastAttackTime = 0f;
+
+    // Attack Parameters
+    public GameObject attackHitboxPrefab;  // Attach a prefab for the hitbox in Unity Editor
+    public float attackDistance = 1.0f;   // Distance in front of the player for the hitbox
+
+    // Dodge Parameters
+    public float maxDodgeDistance = 5f;  // Max dodge distance
+
+    // Physics & Movement
+    public CharacterController controller; // Attach CharacterController in the inspector
+    private Vector3 playerVelocity;
+    public float gravity = -9.81f;
+
+    // Animator References
+    public Animator swordAnimator; // Drag your sword's Animator here in the inspector
+
 
 
 
@@ -96,71 +149,6 @@ public class PlayerMotor : MonoBehaviour
         moneyText.text = playerMoney.ToString();
     }
 
-    public float maxDodgeDistance = 5f;  // Set your desired max dodge distance here
-
-    private float lastStaminaUseTime = 0f; // The time when the player last used stamina
-
-    public float staminaRegenDelay = 2.0f;  // 2-second delay before stamina starts regenerating
-
-
-    public float SprintStaminaCost = 20f;
-
-    public float DogeStaminaCost = 10f;
-
-    public float ParryStaminaCost = 14f;
-
-    public float AttackStaminaCost = 14f;
-
-    public float staminaRegenRate = 100f; // The rate at which stamina regenerates per second
-
-    public float JumpStaminaCost = 10f;
-
-    public bool isParrying = false;
-    private float parryCooldown = 2.0f; // 2-second cooldown for the parry
-    private float lastParryTime = 0f;
-
-
-    private bool isDodging = false;
-
-    private bool hasAttackedBefore = false;
-
-    public float attackCooldown = 5f;  // Set the cooldown time to 1 second (you can change this value)
-    private float lastAttackTime = 0f;  // Stores the time when the last attack occurred
-
-    public Animator swordAnimator; // Drag your sword's Animator here in the inspector
-
-    public GameObject youDiedText; // Drag your "You Died" UI Text element here in the inspector
-
-
-    private bool isSprinting = false;
-
-    public float maxHealth = 100f;
-    public float currentHealth;
-
-    public float maxStamina = 100f;
-    public float currentStamina;
-
-
-
-    public float speed = 5f;
-    public float sprintMultiplier = 4f; // How much faster the player will sprint
-
-    public float dodgeSpeed = 500f;  // How fast the player will dodge
-    private float currentSpeed;
-
-
-    public GameObject attackHitboxPrefab;  // Attach a prefab for the hitbox in Unity Editor
-    public float attackDistance = 1.0f;   // The distance in front of the player where the hitbox will appear
-
-    public CharacterController controller;
-
-    private Vector3 plaryVelocity;
-
-    private bool isGrounded;
-    public float gravity = -9.81f;
-
-
-    public float jumpHeight = 3f;
     // Start is called before the first frame update
     void Start()
     { 
@@ -213,20 +201,20 @@ public class PlayerMotor : MonoBehaviour
         moveDirection.x = input.x;
         moveDirection.z = input.y;
         controller.Move(transform.TransformDirection(moveDirection) * currentSpeed * Time.deltaTime);
-        plaryVelocity += Vector3.up * gravity * Time.deltaTime;
-        if (isGrounded && plaryVelocity.y < 0)
+        playerVelocity += Vector3.up * gravity * Time.deltaTime;
+        if (isGrounded && playerVelocity.y < 0)
         {
-            plaryVelocity.y = -2f;
+            playerVelocity.y = -2f;
         }
-        controller.Move(plaryVelocity * Time.deltaTime);
-        // Debug.Log(plaryVelocity.y);
+        controller.Move(playerVelocity * Time.deltaTime);
+        // Debug.Log(playerVelocity.y);
     }
 
     public void Jump()
     {
         if(isGrounded)
         {
-            plaryVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            playerVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             UseStamina(JumpStaminaCost); 
         }
     }
@@ -259,7 +247,7 @@ public class PlayerMotor : MonoBehaviour
     {
         if (isGrounded && currentStamina > 4 && !isDodging)
         {
-            UseStamina(DogeStaminaCost);
+            UseStamina(DodgeStaminaCost);
             Vector3 dodgeDirection = Vector3.zero;
             isDodging = true;
 

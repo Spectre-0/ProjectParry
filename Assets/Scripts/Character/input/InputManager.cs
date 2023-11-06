@@ -13,6 +13,8 @@ public class InputManager : MonoBehaviour
 
     private PlayerMotor motor;
 
+
+
     private PlayerLook look;
     // Start is called before the first frame update
     void Awake()
@@ -30,6 +32,7 @@ public class InputManager : MonoBehaviour
         onFoot.Parry.performed += ctx => motor.Parry();
         onFoot.Heal.performed += ctx => motor.Heal();
         onFoot.Menu.performed += ctx => motor.TogglePause();
+  
         
 
         
