@@ -1,14 +1,21 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AttackHitbox : MonoBehaviour
 {
-    public int damage = 20;  // Set the amount of damage this attack will deal
+    public int damage = 20; // Set the amount of damage this attack will deal
+    public float hitCooldown = 0.5f; // Cooldown in seconds before the hitbox can hit again
+
+    private bool isOnCooldown = false; // Tracks whether the hitbox is on cooldown
 
     private void OnTriggerEnter(Collider other)
     {
-        // Check if the hitbox collided with an enemy
+        // If the hitbox is on cooldown, don't check for hits
+        if (isOnCooldown)
+        {
+            return;
+        }
+
         if (other.gameObject.CompareTag("Enemy"))
         {
             // Fetch the Enemy script attached to the GameObject
@@ -17,11 +24,31 @@ public class AttackHitbox : MonoBehaviour
             // Apply damage to the enemy
             if (enemy != null)
             {
+                Debug.Log("Enemy hit");
                 enemy.TakeDamage(damage);
+                StartCoroutine(HitCooldown()); // Start the hit cooldown
             }
-
-            // Optionally, destroy the hitbox after it hits an enemy
-            Destroy(gameObject);
         }
+
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            // Fetch the Troll_script script attached to the GameObject
+            Troll_script enemy = other.gameObject.GetComponent<Troll_script>();
+
+            // Apply damage to the troll
+            if (enemy != null)
+            {
+                Debug.Log("Troll hit");
+                enemy.TakeDamage(damage);
+                StartCoroutine(HitCooldown()); // Start the hit cooldown
+            }
+        }
+    }
+
+    private IEnumerator HitCooldown()
+    {
+        isOnCooldown = true; // Set the hitbox to be on cooldown
+        yield return new WaitForSeconds(hitCooldown); // Wait for the cooldown duration
+        isOnCooldown = false; // Reset the cooldown
     }
 }
