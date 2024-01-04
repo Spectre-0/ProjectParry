@@ -1,31 +1,49 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.SceneManagement; // Needed for getting scene information
 using UnityEngine.UI;
-using System.Collections;
+using TMPro;
 
 public class BossEnemy : MonoBehaviour
 {
-    public GameObject youWinText; // Assign your 'You Win' UI Text element in the inspector
+    public GameObject WinMenuUI; // Assign your 'Win Menu' UI Panel in the inspector
+    public TextMeshProUGUI score; // Assign your 'Score Text' UI element in the inspector
+
+    public TextMeshProUGUI scoreText; // Assign your 'Score Text' UI element in the inspector
+    public TextMeshProUGUI highScoreText; // Assign your 'High Score Text' UI element in the inspector
+
+    public GameObject player; // Reference to the player game object
+    public PlayerMotor playerMotor; // Reference to the PlayerMotor script to access the player's score
 
     private void OnDestroy()
     {
-        // Activate the 'You Win' text
-        youWinText.SetActive(true);
-
+        // Stop the game
+        Time.timeScale = 0;
+        // Show cursor
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        // Activate the 'Win Menu' UI panel
+        WinMenuUI.SetActive(true);
 
-        SceneManager.LoadScene(0);
+        // Get the current score from the player
+        int currentScore = playerMotor.GetScore();
+        // Update the score display
+        score.text = currentScore.ToString();
 
-        // Start coroutine to load the scene after a delay
-        StartCoroutine(LoadSceneAfterDelay());
-    }
+        // Get the current scene index
+        int sceneIndex = SceneManager.GetActiveScene().buildIndex;
 
-    private IEnumerator LoadSceneAfterDelay()
-    {
-        // Wait for 3 seconds
-        yield return new WaitForSeconds(3);
-
-        // Load scene at index 0
-        SceneManager.LoadScene(0);
+        // Check if the current score is greater than the high score for the level
+        if (GameSettingsManager.Instance.GetHighScoreForLevel(sceneIndex) < currentScore)
+        {
+            // Update the high score for the level
+            GameSettingsManager.Instance.SetHighScoreForLevel(sceneIndex, currentScore);
+            highScoreText.gameObject.SetActive(true);
+            scoreText.gameObject.SetActive(false); // Hide the regular score text
+        }
+        else
+        {
+            highScoreText.gameObject.SetActive(false);
+            scoreText.gameObject.SetActive(true); // Hide the regular score text
+        }
     }
 }

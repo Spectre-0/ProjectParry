@@ -15,16 +15,36 @@ public class PlayerMenu : MonoBehaviour
 
     public void Restart()
     {
-        //restasrt the  cuurent scene
+        // Restart the current scene
+        int nextLevelIndex = Application.loadedLevel;
+        if (nextLevelIndex >= Application.levelCount)
+        {
+            nextLevelIndex = 0; // Go to the first level if index is out of range
+        }
 
-        Application.LoadLevel(Application.loadedLevel);
+        Application.LoadLevel(nextLevelIndex);
 
-        // unpause the game
+        // Unpause the game
         Time.timeScale = 1;
-            
-
-        
     }
+
+    public void nextLevel()
+    {
+        // Go to the next level
+        int nextLevelIndex = Application.loadedLevel + 1;
+        if (nextLevelIndex >= Application.levelCount)
+        {
+            nextLevelIndex = 0; // Go to the first level if index is out of range
+        }
+
+        Application.LoadLevel(nextLevelIndex);
+
+        // Unpause the game
+        Time.timeScale = 1;
+    }
+    
+
+    
 
     public void ExitToMainMenu()
     {

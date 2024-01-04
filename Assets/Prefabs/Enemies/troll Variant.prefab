@@ -193,7 +193,7 @@ MonoBehaviour:
   attackHitboxPrefab: {fileID: 3974188327393719564, guid: 4f5425316157f7e4b9f401501f0f8757, type: 3}
   hitboxPos: {fileID: 0}
   fovAngle: 110
-  maxDetectionDistance: 10
+  maxDetectionDistance: 30
   enemyValue: 10000
 --- !u!65 &8795742889264780656
 BoxCollider:

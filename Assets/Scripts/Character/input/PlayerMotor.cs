@@ -149,6 +149,14 @@ public class PlayerMotor : MonoBehaviour
         moneyText.text = playerMoney.ToString();
     }
 
+    public int GetScore()
+    {
+        return playerMoney; // 'playerMoney' is the player's score
+    }
+
+
+    
+
     // Start is called before the first frame update
     void Start()
     { 

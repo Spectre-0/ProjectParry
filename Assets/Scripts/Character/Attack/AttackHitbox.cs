@@ -6,15 +6,11 @@ public class AttackHitbox : MonoBehaviour
     public int damage = 20; // Set the amount of damage this attack will deal
     public float hitCooldown = 0.5f; // Cooldown in seconds before the hitbox can hit again
 
-    private bool isOnCooldown = false; // Tracks whether the hitbox is on cooldown
+
 
     private void OnTriggerEnter(Collider other)
     {
         // If the hitbox is on cooldown, don't check for hits
-        if (isOnCooldown)
-        {
-            return;
-        }
 
         if (other.gameObject.CompareTag("Enemy"))
         {
@@ -47,8 +43,8 @@ public class AttackHitbox : MonoBehaviour
 
     private IEnumerator HitCooldown()
     {
-        isOnCooldown = true; // Set the hitbox to be on cooldown
+        
         yield return new WaitForSeconds(hitCooldown); // Wait for the cooldown duration
-        isOnCooldown = false; // Reset the cooldown
+        
     }
 }
