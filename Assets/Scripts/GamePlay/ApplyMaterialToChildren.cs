@@ -2,19 +2,14 @@ using UnityEngine;
 
 public class ApplyMaterialToChildren : MonoBehaviour
 {
-    public PhysicMaterial SlipperyTrees;
-    public Material Green;
+    public Material materials;
 
     void Start()
     {
-        foreach (var collider in GetComponentsInChildren<Collider>())
-        {
-            collider.material = SlipperyTrees;
-        }
 
         foreach (var renderer in GetComponentsInChildren<Renderer>())
         {
-            renderer.material = Green;
+            renderer.material = materials;
         }
     }
 }
