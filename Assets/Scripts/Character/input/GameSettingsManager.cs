@@ -101,6 +101,18 @@ public class GameSettingsManager : MonoBehaviour
         PlayerPrefs.Save(); // Save the change
     }
 
+    // reset high score for all levels
+
+    public void ResetHighScore()
+    {
+        PlayerPrefs.DeleteKey("Level1HighScore");
+        PlayerPrefs.DeleteKey("Level2HighScore");
+        PlayerPrefs.DeleteKey("Level3HighScore");
+        level1HighScore = 0;
+        level2HighScore = 0;
+        level3HighScore = 0;
+    }
+
 
     public void SetSFXVolume(float value)
     {

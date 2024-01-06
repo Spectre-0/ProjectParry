@@ -48,6 +48,12 @@ public class MainMenu : MonoBehaviour
 
     }
 
+    public void resetHighScore()
+    {
+        GameSettingsManager.Instance.ResetHighScore();
+        SetHighScoreText();
+    }
+
     public void Level1()
     {
         LoadLevel(1);
