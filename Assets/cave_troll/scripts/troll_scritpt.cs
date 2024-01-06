@@ -86,25 +86,25 @@ public class Troll_script : MonoBehaviour
             HandleTrollBehavior();
         }
     }
-private void UpdateHealthUI()
-{
-    // Calculate the percentage of health remaining
-    float healthPercent = (float)currentHealth / maxHealth;
-
-    // Update the health slider to reflect current health
-    if (healthSlider.value != healthPercent)
+    private void UpdateHealthUI()
     {
-        Debug.Log("Health Slider: " + healthPercent);
+        // Calculate the percentage of health remaining
+        float healthPercent = (float)currentHealth / maxHealth;
 
-        healthSlider.value = healthPercent;
-    }
+        // Update the health slider to reflect current health
+        if (healthSlider.value != healthPercent)
+        {
+            Debug.Log("Health Slider: " + healthPercent);
 
-    // Smoothly transition the ease health slider to match the health slider
-    if (Mathf.Abs(easeHealthSlider.value - healthPercent) > Mathf.Epsilon)
-    {
-        easeHealthSlider.value = Mathf.Lerp(easeHealthSlider.value, healthSlider.value, healthLerpSpeed);
+            healthSlider.value = healthPercent;
+        }
+
+        // Smoothly transition the ease health slider to match the health slider
+        if (Mathf.Abs(easeHealthSlider.value - healthPercent) > Mathf.Epsilon)
+        {
+            easeHealthSlider.value = Mathf.Lerp(easeHealthSlider.value, healthSlider.value, healthLerpSpeed);
+        }
     }
-}
     private void CheckForPlayerInFOV()
     {
         Vector3 directionToPlayer = player.position - transform.position;
