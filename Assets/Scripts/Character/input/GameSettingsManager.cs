@@ -19,6 +19,10 @@ public class GameSettingsManager : MonoBehaviour
     public int level3HighScore = 0;
 
 
+    public float SFXVolume { get; private set; } = 0.5f; // Default value for SFX Volume
+    public float MusicVolume { get; private set; } = 0.5f; // Default value for Music Volume
+
+
     private void Awake()
     {
         if (Instance == null)
@@ -97,10 +101,26 @@ public class GameSettingsManager : MonoBehaviour
         PlayerPrefs.Save(); // Save the change
     }
 
+
+    public void SetSFXVolume(float value)
+    {
+        SFXVolume = value;
+        PlayerPrefs.SetFloat("SFXVolume", value);
+    }
+
+    public void SetMusicVolume(float value)
+    {
+        MusicVolume = value;
+        PlayerPrefs.SetFloat("MusicVolume", value);
+    }
+
     public void LoadSettings()
     {
         FOV = PlayerPrefs.GetFloat("PlayerFOV", 90f); // Load FOV, default to 90 if not set
         MouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity", 30f); // Load sensitivity, default to 30 if not set
+
+        SFXVolume = PlayerPrefs.GetFloat("SFXVolume", 0.5f);
+        MusicVolume = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
         level1HighScore = PlayerPrefs.GetInt("Level1HighScore", 0);
         level2HighScore = PlayerPrefs.GetInt("Level2HighScore", 0);
         level3HighScore = PlayerPrefs.GetInt("Level3HighScore", 0);

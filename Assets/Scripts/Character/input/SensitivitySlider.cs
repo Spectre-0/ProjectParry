@@ -25,7 +25,7 @@ public class SensitivitySlider : MonoBehaviour
         // Update the display text with the new value
         if (sensitivityText != null)
         {
-            sensitivityText.text = $"Sensitivity: {value.ToString("0.0")}"; // Display with 1 decimal point
+            sensitivityText.text = $"{value.ToString("0.0")}"; // Display with 1 decimal point
         }
     }
 }

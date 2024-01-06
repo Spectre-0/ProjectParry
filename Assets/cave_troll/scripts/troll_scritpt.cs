@@ -47,6 +47,15 @@ public class Troll_script : MonoBehaviour
 
     public int enemyValue = 100000;
 
+
+    AudioManager audioManager;
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
+
+
     
 
     private void Start()
@@ -116,34 +125,42 @@ private void UpdateHealthUI()
         playerInSight = false;
     }
 
-
     private void HandleTrollBehavior()
     {
         float distance = Vector3.Distance(player.position, transform.position);
 
         RotateTowardsPlayer();
-        if (distance > stoppingDistance && playerInSight)
+        
+        // If the enemy is not within the stopping distance and not attacking, pursue the player
+        if (distance > stoppingDistance && !isAttacking)
         {
             enemy.isStopped = false;
             enemy.SetDestination(player.position);
-            anim.SetBool("walk", true);
-           //anim.SetBool("idle", false);
-            //anim.SetBool("idleWobble", false);
         }
         else
         {
-            anim.SetBool("walk", false);
-            //anim.SetBool("idle", true);
-            if (!isAttacking)
+            // If within stopping distance, stop and prepare to attack
+            enemy.isStopped = true;
+
+            if (!isAttacking && Time.time >= nextAttackTime)
             {
-                if (Time.time >= nextAttackTime)
-                {
-                    StartCoroutine(ChooseAttack());
-                    nextAttackTime = Time.time + attackCooldown;
-                }
+                StartCoroutine(ChooseAttack());
+                nextAttackTime = Time.time + attackCooldown;
             }
         }
+
+        // Set the walking animation based on the enemy's isStopped status
+        // The walk animation will play when the enemy is moving, and stop when the enemy stops
+        anim.SetBool("walk", !enemy.isStopped);
     }
+
+    [Header("Attack Parameters")]
+
+    public float attack1HitStart = 0.2f;
+    public float attack1HitLastFor = 0.01f;
+
+    public float attack2HitStart = 0.5f;
+    public float attack2HitLastFor= 0.01f;
 
 IEnumerator ChooseAttack()
 {
@@ -159,19 +176,31 @@ IEnumerator ChooseAttack()
     float attackAnimationTime = anim.GetCurrentAnimatorClipInfo(0)[0].clip.length;
     
     // If it's attack1, we might want to spawn the hitbox later than if it's attack2
-    float hitboxSpawnTime = isAttack1 ? attackAnimationTime * 0.2f : attackAnimationTime * 0.5f;
+    float hitboxSpawnTime = 0f;
+    float hitboxActiveTime = 0f;
+
+    if (isAttack1)
+    {
+        hitboxSpawnTime = attackAnimationTime * attack1HitStart;
+        hitboxActiveTime = attackAnimationTime * attack1HitLastFor;
+    }
+    else
+    {
+        hitboxSpawnTime = attackAnimationTime * attack2HitStart;
+        hitboxActiveTime = attackAnimationTime * attack2HitLastFor;
+    }
+
     yield return new WaitForSeconds(hitboxSpawnTime);
 
     // Enable the hitbox collider to detect hits
     hitboxCollider.enabled = true;
+    audioManager.PlaySFX(audioManager.BossAttackAudio);
 
     // Wait for a brief moment while the hitbox is active (adjust this time as necessary)
-    float hitboxActiveTime = isAttack1 ? attackAnimationTime * 0.01f : attackAnimationTime * 0.01f;
     yield return new WaitForSeconds(hitboxActiveTime);
 
-    //Disable the hitbox collider after the attack
+    // Disable the hitbox collider after the attack
     hitboxCollider.enabled = false;
-
 
     isAttacking = false;
     nextAttackTime = Time.time + attackCooldown; // Ensure the next attack has a delay based on the cooldown

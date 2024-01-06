@@ -7,6 +7,12 @@ public class AttackHitbox : MonoBehaviour
     public float hitCooldown = 0.5f; // Cooldown in seconds before the hitbox can hit again
 
 
+    AudioManager audioManager;
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -21,6 +27,7 @@ public class AttackHitbox : MonoBehaviour
             if (enemy != null)
             {
                 Debug.Log("Enemy hit");
+                audioManager.PlaySFX(audioManager.playerAttackAudio);
                 enemy.TakeDamage(damage);
                 StartCoroutine(HitCooldown()); // Start the hit cooldown
             }
@@ -35,6 +42,7 @@ public class AttackHitbox : MonoBehaviour
             if (enemy != null)
             {
                 Debug.Log("Troll hit");
+                audioManager.PlaySFX(audioManager.playerAttackAudio);
                 enemy.TakeDamage(damage);
                 StartCoroutine(HitCooldown()); // Start the hit cooldown
             }

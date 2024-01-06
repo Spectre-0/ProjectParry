@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMenu : MonoBehaviour
 {
@@ -12,20 +13,20 @@ public class PlayerMenu : MonoBehaviour
     {
         ShowPlayerMenu();
     }
-
     public void Restart()
     {
         // Restart the current scene
-        int nextLevelIndex = Application.loadedLevel;
-        if (nextLevelIndex >= Application.levelCount)
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        // Unpause the game by calling the UnpauseGame method in PlayerMotor
+        if (playerMenuPanel.activeSelf)
         {
-            nextLevelIndex = 0; // Go to the first level if index is out of range
+            PlayerMotor playerMotor = FindObjectOfType<PlayerMotor>();
+            if (playerMotor)
+            {
+                playerMotor.UnpauseGame();
+            }
         }
-
-        Application.LoadLevel(nextLevelIndex);
-
-        // Unpause the game
-        Time.timeScale = 1;
     }
 
     public void nextLevel()
