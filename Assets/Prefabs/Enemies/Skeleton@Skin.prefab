@@ -1137,7 +1137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  maxHealth: 300
+  maxHealth: 100
   healthSlider: {fileID: 246176388674275648}
   easeHealthSlider: {fileID: 238824142989841915}
   stoppingDistance: 2

@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 8825613204524177022}
     - target: {fileID: 2128586937072982188, guid: 26c474dd926b77941b439ad43851213e, type: 3}
       propertyPath: maxHealth
-      value: 1000
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2632066706589309654, guid: 26c474dd926b77941b439ad43851213e, type: 3}
       propertyPath: m_AnchorMax.x

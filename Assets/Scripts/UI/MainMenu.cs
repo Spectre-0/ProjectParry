@@ -15,10 +15,10 @@ public class MainMenu : MonoBehaviour
 
     public TextMeshProUGUI level1HighScoreText; // Assign your 'High Score Text' UI element in the inspector
     public TextMeshProUGUI level2HighScoreText; // Assign your 'High Score Text' UI element in the inspector
-    public TextMeshProUGUI level3HighScoreText; // Assign your 'High Score Text' UI element in the inspector
+
 
     public GameObject level2LockImage; // Assign the Level 2 lock image in the inspector
-    public GameObject level3LockImage; // Assign the Level 3 lock image in the inspector
+
 
     
 
@@ -49,7 +49,6 @@ public class MainMenu : MonoBehaviour
     {
         level1HighScoreText.text = "High score: "+GameSettingsManager.Instance.GetHighScoreForLevel(1).ToString();
         level2HighScoreText.text = "High score: "+GameSettingsManager.Instance.GetHighScoreForLevel(2).ToString();
-        level3HighScoreText.text = "High score:" +GameSettingsManager.Instance.GetHighScoreForLevel(3).ToString();
     }
 
     public void LevelSelect()
@@ -75,17 +74,7 @@ public class MainMenu : MonoBehaviour
             level2HighScoreText.gameObject.SetActive(false);
         }
 
-        // Unlock Level 3 if Level 2 high score is greater than 0
-        if (GameSettingsManager.Instance.GetHighScoreForLevel(2) > 0)
-        {
-            level3LockImage.SetActive(false);
-            level3HighScoreText.gameObject.SetActive(true);
-        }
-        else
-        {
-            level3LockImage.SetActive(true);
-            level3HighScoreText.gameObject.SetActive(false);
-        }
+
     }
 
     public void resetHighScore()
@@ -108,11 +97,6 @@ public class MainMenu : MonoBehaviour
         LoadLevel(2);
     }
 
-    public void Level3()
-    {
-        audioManager.PlaySFX(audioManager.buttoinClickAudio);
-        LoadLevel(3);
-    }
 
     // Common method to load levels
     private void LoadLevel(int levelIndex)
