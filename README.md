@@ -46,9 +46,21 @@ A "Souls-like" game developed with Unity 2023.15f1.
 - **Sprint**: Hold `Shift` to sprint in the direction you are moving.
 - **Dodge**: Tap `Left-Ctrl` to dodge in the direction you are moving.
 - **Jump**: Tap `Spacebar` to jump.
-  **Jump**: Tap `Q` to Heal.
+- **Heal**: Tap `Q` to Heal.
 ### HUD Elements
 
 - **Health Bar**: Red bar represents health.
 - **Stamina Bar**: Green bar represents stamina, which is consumed when you sprint, jump, or dodge.
 - **Score**: bottom right corner is the score eliminate more enemies to increase the score
+- **Healling Potion Icon**: bottom left corner is a helth potion icon and it contains your remaining heals
+- **Controls**: btop right corner displayes the controls
+
+## External Assets list
+- https://assetstore.unity.com/packages/audio/sound-fx/free-casual-game-sfx-pack-54116
+- https://assetstore.unity.com/packages/audio/sound-fx/free-sound-effects-pack-155776
+- https://assetstore.unity.com/packages/3d/characters/animals/insects/animated-spider-22986
+- https://assetstore.unity.com/packages/3d/characters/humanoids/fantasy-monster-skeleton-35635
+- https://assetstore.unity.com/packages/p/monster-scavenger-191323
+- https://assetstore.unity.com/packages/3d/environments/fantasy/castle-supply-lite-23699
+- https://assetstore.unity.com/packages/p/hungry-zombie-99750
+- https://assetstore.unity.com/packages/3d/characters/creatures/creature-cave-troll-115707
