@@ -182,7 +182,7 @@ MonoBehaviour:
   BossHitPlayerAudio: {fileID: 0}
   BossgetHitAudio: {fileID: 0}
   BossWalkAudio: {fileID: 0}
-  mobAttackAudio: {fileID: 0}
+  mobAttackAudio: {fileID: 8300000, guid: e1a75776f005439469f89a17a986c567, type: 3}
   mobDeathAudio: {fileID: 0}
   mobHitPlayerAudio: {fileID: 0}
   mobgetHitAudio: {fileID: 0}
@@ -191,7 +191,7 @@ MonoBehaviour:
   playerDeathAudio: {fileID: 0}
   playerWalkAudio: {fileID: 8300000, guid: 9b713c76b05f8b04882a23a60605b0d2, type: 3}
   playerJumpAudio: {fileID: 0}
-  buttoinClickAudio: {fileID: 8300000, guid: 00a2be911ec2b7a4292e597bd9003500, type: 3}
+  buttoinClickAudio: {fileID: 8300000, guid: 19f89c6e740e7447f9e12a8310d3e973, type: 3}
   sliderMoveAudio: {fileID: 0}
 --- !u!1 &9115895308755529041
 GameObject:

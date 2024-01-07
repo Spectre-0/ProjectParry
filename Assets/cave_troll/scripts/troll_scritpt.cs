@@ -197,10 +197,11 @@ IEnumerator ChooseAttack()
 
     // Enable the hitbox collider to detect hits
     hitboxCollider.enabled = true;
-    audioManager.PlaySFX(audioManager.BossAttackAudio);
+    audioManager.PlaySFX(audioManager.mobAttackAudio);
 
     // Wait for a brief moment while the hitbox is active (adjust this time as necessary)
     yield return new WaitForSeconds(hitboxActiveTime);
+    
 
     // Disable the hitbox collider after the attack
     hitboxCollider.enabled = false;
