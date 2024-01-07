@@ -9,12 +9,21 @@ public class PlayerMenu : MonoBehaviour
     public GameObject optionsMenuPanel;   // Assign the OptionsMenu panel from the inspector
     public GameObject keyBindMenuPanel;   // Assign the KeyBindMenu panel from the inspector
 
+
+    AudioManager audioManager;
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
+
     private void Start()
     {
         ShowPlayerMenu();
     }
     public void Restart()
     {
+        audioManager.PlaySFX(audioManager.buttoinClickAudio);
         // Restart the current scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
@@ -31,6 +40,7 @@ public class PlayerMenu : MonoBehaviour
 
     public void nextLevel()
     {
+        audioManager.PlaySFX(audioManager.buttoinClickAudio);
         // Go to the next level
         int nextLevelIndex = Application.loadedLevel + 1;
         if (nextLevelIndex >= Application.levelCount)
@@ -49,6 +59,7 @@ public class PlayerMenu : MonoBehaviour
 
     public void ExitToMainMenu()
     {
+        audioManager.PlaySFX(audioManager.buttoinClickAudio);
         Debug.Log("Exiting to main menu");
         // unpause the game
         Time.timeScale = 1;
@@ -59,6 +70,7 @@ public class PlayerMenu : MonoBehaviour
 
     public void ShowPlayerMenu()
     {
+        audioManager.PlaySFX(audioManager.buttoinClickAudio);
         playerMenuPanel.SetActive(true);
         optionsMenuPanel.SetActive(false);
         keyBindMenuPanel.SetActive(false);
@@ -66,6 +78,7 @@ public class PlayerMenu : MonoBehaviour
 
     public void ShowOptionsMenu()
     {
+        audioManager.PlaySFX(audioManager.buttoinClickAudio);
         playerMenuPanel.SetActive(false);
         optionsMenuPanel.SetActive(true);
         keyBindMenuPanel.SetActive(false);
@@ -73,6 +86,7 @@ public class PlayerMenu : MonoBehaviour
 
     public void ShowKeyBindMenu()
     {
+        audioManager.PlaySFX(audioManager.buttoinClickAudio);
         playerMenuPanel.SetActive(false);
         optionsMenuPanel.SetActive(false);
         keyBindMenuPanel.SetActive(true);

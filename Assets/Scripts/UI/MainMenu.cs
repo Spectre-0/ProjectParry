@@ -17,6 +17,12 @@ public class MainMenu : MonoBehaviour
     public TextMeshProUGUI level2HighScoreText; // Assign your 'High Score Text' UI element in the inspector
     public TextMeshProUGUI level3HighScoreText; // Assign your 'High Score Text' UI element in the inspector
 
+    AudioManager audioManager;
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
 
     private void Start()
     {
@@ -26,6 +32,7 @@ public class MainMenu : MonoBehaviour
 
     public void PlayGame()
     {
+        audioManager.PlaySFX(audioManager.buttoinClickAudio);
         LevelSelect();
 
     }
@@ -56,16 +63,19 @@ public class MainMenu : MonoBehaviour
 
     public void Level1()
     {
+        audioManager.PlaySFX(audioManager.buttoinClickAudio);
         LoadLevel(1);
     }
 
     public void Level2()
     {
+        audioManager.PlaySFX(audioManager.buttoinClickAudio);
         LoadLevel(2);
     }
 
     public void Level3()
     {
+        audioManager.PlaySFX(audioManager.buttoinClickAudio);
         LoadLevel(3);
     }
 
@@ -78,8 +88,10 @@ public class MainMenu : MonoBehaviour
 
     public void QuitGame()
     {
+        audioManager.PlaySFX(audioManager.buttoinClickAudio);
         Debug.Log("Quit");
         Application.Quit();
+        
     }
 
     public void ShowMainMenu()
@@ -88,6 +100,7 @@ public class MainMenu : MonoBehaviour
         optionsMenuPanel.SetActive(false);
         keyBindMenuPanel.SetActive(false);
         levelSelectPanel.SetActive(false);
+        audioManager.PlaySFX(audioManager.buttoinClickAudio);
     }
 
     public void ShowOptionsMenu()
@@ -96,6 +109,7 @@ public class MainMenu : MonoBehaviour
         optionsMenuPanel.SetActive(true);
         keyBindMenuPanel.SetActive(false);
         levelSelectPanel.SetActive(false);
+        audioManager.PlaySFX(audioManager.buttoinClickAudio);
     }
 
     public void ShowKeyBindMenu()
@@ -104,6 +118,7 @@ public class MainMenu : MonoBehaviour
         optionsMenuPanel.SetActive(false);
         keyBindMenuPanel.SetActive(true);
         levelSelectPanel.SetActive(false);
+        audioManager.PlaySFX(audioManager.buttoinClickAudio);
     }
 
     public void BackFromKeyBindsToOptions()

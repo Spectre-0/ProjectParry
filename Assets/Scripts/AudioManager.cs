@@ -34,6 +34,11 @@ public class AudioManager : MonoBehaviour
     public AudioClip playerJumpAudio;
 
 
+    public AudioClip buttoinClickAudio;
+
+    public AudioClip sliderMoveAudio;
+
+
      private void Start()
     {
         // Set the audio sources to the saved volume levels
