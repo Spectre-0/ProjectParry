@@ -58,6 +58,7 @@ A "Souls-like" game developed with Unity 2023.15f1.
 ## External Audio Assets 
 - **FREE Casual Game SFX Pack :** https://assetstore.unity.com/packages/audio/sound-fx/free-casual-game-sfx-pack-54116
 - **Free Sound Effects Pack:** https://assetstore.unity.com/packages/audio/sound-fx/free-sound-effects-pack-155776
+- **game setting fantasy:** https://pixabay.com/music/introoutro-game-setting-fantasy-142092/
 
 ## External Character Assets 
 - **Animated Spider**: https://assetstore.unity.com/packages/3d/characters/animals/insects/animated-spider-22986
