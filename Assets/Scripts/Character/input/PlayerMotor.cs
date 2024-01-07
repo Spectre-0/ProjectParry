@@ -276,7 +276,7 @@ public class PlayerMotor : MonoBehaviour
             GameObject hitbox = Instantiate(attackHitboxPrefab, attackPosition, transform.rotation);
             
             // Destroy the hitbox after a short time (e.g., 0.5 seconds)
-            Destroy(hitbox, 0.5f);
+            Destroy(hitbox, 0.3f);
         }
     }
 
