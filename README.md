@@ -53,7 +53,7 @@ A "Souls-like" game developed with Unity 2023.15f1.
 - **Stamina Bar**: Green bar represents stamina, which is consumed when you sprint, jump, or dodge.
 - **Score**: bottom right corner is the score eliminate more enemies to increase the score
 - **Healling Potion Icon**: bottom left corner is a helth potion icon and it contains your remaining heals
-- **Controls**: btop right corner displayes the controls
+- **Controls**: top right corner displayes the controls
 
 ## External Assets list
 - https://assetstore.unity.com/packages/audio/sound-fx/free-casual-game-sfx-pack-54116
