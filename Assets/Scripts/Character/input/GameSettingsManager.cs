@@ -6,7 +6,7 @@ public class GameSettingsManager : MonoBehaviour
 {
     public static GameSettingsManager Instance;
 
-    public float FOV { get; private set; } = 90f; // Default FOV value
+    public float FOV { get; private set; } = 70f; // Default FOV value
 
     public delegate void SensitivityChangeDelegate(float newSensitivity);
     public event SensitivityChangeDelegate OnSensitivityChanged;
@@ -21,6 +21,12 @@ public class GameSettingsManager : MonoBehaviour
 
     public float SFXVolume { get; private set; } = 0.5f; // Default value for SFX Volume
     public float MusicVolume { get; private set; } = 0.5f; // Default value for Music Volume
+
+    private void Start()
+    {
+
+        LoadSettings();
+    }
 
 
     private void Awake()
@@ -128,7 +134,7 @@ public class GameSettingsManager : MonoBehaviour
 
     public void LoadSettings()
     {
-        FOV = PlayerPrefs.GetFloat("PlayerFOV", 90f); // Load FOV, default to 90 if not set
+        FOV = PlayerPrefs.GetFloat("PlayerFOV", 70f); // Load FOV, default to 70 if not set
         MouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity", 30f); // Load sensitivity, default to 30 if not set
 
         SFXVolume = PlayerPrefs.GetFloat("SFXVolume", 0.5f);

@@ -24,6 +24,8 @@ public class BossEnemy : MonoBehaviour
         // Activate the 'Win Menu' UI panel
         WinMenuUI.SetActive(true);
 
+        // disable ecape key while in win menu
+    
         // Get the current score from the player
         int currentScore = playerMotor.GetScore();
         // Update the score display

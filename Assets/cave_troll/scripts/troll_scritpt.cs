@@ -48,6 +48,9 @@ public class Troll_script : MonoBehaviour
     public int enemyValue = 100000;
 
 
+    
+
+
     AudioManager audioManager;
 
     private void Awake()

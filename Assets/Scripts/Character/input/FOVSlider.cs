@@ -20,6 +20,7 @@ public class FOVSlider : MonoBehaviour
     {
         fovSlider.value = GameSettingsManager.Instance.FOV;
         UpdateFOVText(fovSlider.value); // Update the text at start
+        ValueChangeCheck();
 
         fovSlider.onValueChanged.AddListener(delegate { ValueChangeCheck(); }); // Listen for value changes
 
