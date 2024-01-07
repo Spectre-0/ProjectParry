@@ -26,6 +26,7 @@ public class Troll_script : MonoBehaviour
     [SerializeField] private float stoppingDistance = 1.5f;
     [SerializeField] private float attackCooldown = 2.0f;
     [SerializeField] private float attackSpeed = 5.0f;
+    [SerializeField] private float viewDistance = 10.0f;
     private float nextAttackTime;
     private bool isAttacking;
     private bool isLeaping;
@@ -114,7 +115,7 @@ public class Troll_script : MonoBehaviour
         float angle = Vector3.Angle(directionToPlayer, transform.forward);
         float distance = Vector3.Distance(transform.position, player.position);
 
-        if ((angle < fovAngle * 0.5f && distance <= maxDetectionDistance) || distance <= 10.0f)
+        if ((angle < fovAngle * 0.5f && distance <= maxDetectionDistance) || distance <= viewDistance)
         {
             RaycastHit hit;
             if (Physics.Raycast(transform.position + transform.up, directionToPlayer.normalized, out hit, maxDetectionDistance) &&
