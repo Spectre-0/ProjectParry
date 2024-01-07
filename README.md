@@ -70,4 +70,8 @@ A "Souls-like" game developed with Unity 2023.15f1.
 
 ## External Environment Assets 
 - **Castle Supply LITE**: https://assetstore.unity.com/packages/3d/environments/fantasy/castle-supply-lite-23699
+- **Sponza**: https://assetstore.unity.com/packages/3d/environments/historic/sponza-229289
+- **Abandoned buildings**: https://assetstore.unity.com/packages/3d/environments/abandoned-buildings-62875
+
+
 
