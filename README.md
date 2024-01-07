@@ -1,4 +1,4 @@
-# Project Parry
+# Game Title: Sorrow's End
 
 A "Souls-like" game developed with Unity 2023.15f1.
 
