@@ -67,25 +67,30 @@ public class MainMenu : MonoBehaviour
         if (GameSettingsManager.Instance.GetHighScoreForLevel(1) > 0)
         {
             level2LockImage.SetActive(false);
+            level2HighScoreText.gameObject.SetActive(true);
         }
         else
         {
             level2LockImage.SetActive(true);
+            level2HighScoreText.gameObject.SetActive(false);
         }
 
         // Unlock Level 3 if Level 2 high score is greater than 0
         if (GameSettingsManager.Instance.GetHighScoreForLevel(2) > 0)
         {
             level3LockImage.SetActive(false);
+            level3HighScoreText.gameObject.SetActive(true);
         }
         else
         {
             level3LockImage.SetActive(true);
+            level3HighScoreText.gameObject.SetActive(false);
         }
     }
 
     public void resetHighScore()
     {
+        audioManager.PlaySFX(audioManager.buttoinClickAudio);
         GameSettingsManager.Instance.ResetHighScore();
         SetHighScoreText();
         UpdateLevelLocks(); // Update locks after resetting scores
