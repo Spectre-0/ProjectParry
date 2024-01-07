@@ -13,6 +13,8 @@ public class MainMenu : MonoBehaviour
 
     public GameObject levelSelectPanel;   // Assign the LevelSelect panel from the inspector
 
+    public GameObject lorePanel;   // Assign the Lore panel from the inspector
+
     public TextMeshProUGUI level1HighScoreText; // Assign your 'High Score Text' UI element in the inspector
     public TextMeshProUGUI level2HighScoreText; // Assign your 'High Score Text' UI element in the inspector
 
@@ -120,7 +122,9 @@ public class MainMenu : MonoBehaviour
         keyBindMenuPanel.SetActive(false);
         levelSelectPanel.SetActive(false);
         audioManager.PlaySFX(audioManager.buttoinClickAudio);
+        lorePanel.SetActive(false);
     }
+    
 
     public void ShowOptionsMenu()
     {
@@ -128,8 +132,11 @@ public class MainMenu : MonoBehaviour
         optionsMenuPanel.SetActive(true);
         keyBindMenuPanel.SetActive(false);
         levelSelectPanel.SetActive(false);
+        lorePanel.SetActive(false);
         audioManager.PlaySFX(audioManager.buttoinClickAudio);
+        
     }
+    
 
     public void ShowKeyBindMenu()
     {
@@ -137,6 +144,18 @@ public class MainMenu : MonoBehaviour
         optionsMenuPanel.SetActive(false);
         keyBindMenuPanel.SetActive(true);
         levelSelectPanel.SetActive(false);
+        lorePanel.SetActive(false);
+        audioManager.PlaySFX(audioManager.buttoinClickAudio);
+        
+    }
+
+    public void ShowLoreMenu()
+    {
+        mainMenuPanel.SetActive(false);
+        optionsMenuPanel.SetActive(false);
+        keyBindMenuPanel.SetActive(false);
+        levelSelectPanel.SetActive(false);
+        lorePanel.SetActive(true);
         audioManager.PlaySFX(audioManager.buttoinClickAudio);
     }
 
