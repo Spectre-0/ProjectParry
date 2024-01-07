@@ -79,6 +79,9 @@ public class PlayerMotor : MonoBehaviour
 
 
 
+
+
+
     public void TogglePause()
     {
         isGamePaused = !isGamePaused; // Toggle the state of isGamePaused
@@ -356,7 +359,7 @@ public class PlayerMotor : MonoBehaviour
         isParrying = false;
     }
 
-    // Modify TakeDamage method
+    
     public void TakeDamage(float amount)
     {
         if (isParrying)
@@ -367,6 +370,18 @@ public class PlayerMotor : MonoBehaviour
         
         Debug.Log("Player losing health, attack blocked");
         currentHealth -= amount * 0.2f; // 80% damage reduction if missed parry but blocked
+        
+        // Randomly select one of the audio clips to play
+        int randomIndex = Random.Range(0, 2);
+        if (randomIndex == 0)
+        {
+            audioManager.PlaySFX(audioManager.playerGetHitAudio1);
+        }
+        else
+        {
+            audioManager.PlaySFX(audioManager.playerGetHitAudio2);
+        }
+
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth); // Clamp health to 0 and maxHealth
         RedTintEffect.Instance.PlayerHit();
         if (currentHealth <= 0f)

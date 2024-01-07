@@ -177,22 +177,12 @@ MonoBehaviour:
   musicSource: {fileID: 1020734551928907419}
   SFXSource: {fileID: 3922937706116095989}
   backgroundMusic: {fileID: 8300000, guid: a32211351d970334ea704e99ecbbc715, type: 3}
-  BossAttackAudio: {fileID: 0}
-  BossDeathAudio: {fileID: 0}
-  BossHitPlayerAudio: {fileID: 0}
-  BossgetHitAudio: {fileID: 0}
-  BossWalkAudio: {fileID: 0}
   mobAttackAudio: {fileID: 8300000, guid: e1a75776f005439469f89a17a986c567, type: 3}
-  mobDeathAudio: {fileID: 0}
-  mobHitPlayerAudio: {fileID: 0}
-  mobgetHitAudio: {fileID: 0}
-  mobWalkAudio: {fileID: 0}
   playerAttackAudio: {fileID: 8300000, guid: a37f44cbf8c2a7443a3c361efa2f233a, type: 3}
-  playerDeathAudio: {fileID: 0}
   playerWalkAudio: {fileID: 8300000, guid: 9b713c76b05f8b04882a23a60605b0d2, type: 3}
-  playerJumpAudio: {fileID: 0}
   buttoinClickAudio: {fileID: 8300000, guid: 19f89c6e740e7447f9e12a8310d3e973, type: 3}
-  sliderMoveAudio: {fileID: 0}
+  playerGetHitAudio1: {fileID: 8300000, guid: 689ed245a7ea9b741b4c277daed87c77, type: 3}
+  playerGetHitAudio2: {fileID: 8300000, guid: aa8b95b86b339f346a31bd7f70621d48, type: 3}
 --- !u!1 &9115895308755529041
 GameObject:
   m_ObjectHideFlags: 0

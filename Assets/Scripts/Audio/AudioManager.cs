@@ -12,31 +12,21 @@ public class AudioManager : MonoBehaviour
 
     [Header("----------Audio Clips----------")]
     public AudioClip backgroundMusic; 
-    public AudioClip BossAttackAudio;
-    public AudioClip BossDeathAudio;
-
-    public AudioClip BossHitPlayerAudio;
-    public AudioClip BossgetHitAudio;
-    public AudioClip BossWalkAudio;
 
     public AudioClip mobAttackAudio;
-    public AudioClip mobDeathAudio;
-    public AudioClip mobHitPlayerAudio;
-    public AudioClip mobgetHitAudio;
-    public AudioClip mobWalkAudio;
+    
     public AudioClip playerAttackAudio;
     
 
-    public AudioClip playerDeathAudio;
-
     public AudioClip playerWalkAudio;
-
-    public AudioClip playerJumpAudio;
 
 
     public AudioClip buttoinClickAudio;
 
-    public AudioClip sliderMoveAudio;
+    public AudioClip playerGetHitAudio1;
+    public AudioClip playerGetHitAudio2;
+
+   
 
 
      private void Start()
