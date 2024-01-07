@@ -17,6 +17,11 @@ public class MainMenu : MonoBehaviour
     public TextMeshProUGUI level2HighScoreText; // Assign your 'High Score Text' UI element in the inspector
     public TextMeshProUGUI level3HighScoreText; // Assign your 'High Score Text' UI element in the inspector
 
+    public GameObject level2LockImage; // Assign the Level 2 lock image in the inspector
+    public GameObject level3LockImage; // Assign the Level 3 lock image in the inspector
+
+    
+
     AudioManager audioManager;
 
     private void Awake()
@@ -28,6 +33,7 @@ public class MainMenu : MonoBehaviour
     {
         ShowMainMenu();
         SetHighScoreText();
+        UpdateLevelLocks();
     }
 
     public void PlayGame()
@@ -55,10 +61,34 @@ public class MainMenu : MonoBehaviour
 
     }
 
+    void UpdateLevelLocks()
+    {
+        // Unlock Level 2 if Level 1 high score is greater than 0
+        if (GameSettingsManager.Instance.GetHighScoreForLevel(1) > 0)
+        {
+            level2LockImage.SetActive(false);
+        }
+        else
+        {
+            level2LockImage.SetActive(true);
+        }
+
+        // Unlock Level 3 if Level 2 high score is greater than 0
+        if (GameSettingsManager.Instance.GetHighScoreForLevel(2) > 0)
+        {
+            level3LockImage.SetActive(false);
+        }
+        else
+        {
+            level3LockImage.SetActive(true);
+        }
+    }
+
     public void resetHighScore()
     {
         GameSettingsManager.Instance.ResetHighScore();
         SetHighScoreText();
+        UpdateLevelLocks(); // Update locks after resetting scores
     }
 
     public void Level1()
