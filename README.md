@@ -55,12 +55,18 @@ A "Souls-like" game developed with Unity 2023.15f1.
 - **Healling Potion Icon**: bottom left corner is a helth potion icon and it contains your remaining heals
 - **Controls**: top right corner displayes the controls
 
-## External Assets list
-- https://assetstore.unity.com/packages/audio/sound-fx/free-casual-game-sfx-pack-54116
-- https://assetstore.unity.com/packages/audio/sound-fx/free-sound-effects-pack-155776
-- https://assetstore.unity.com/packages/3d/characters/animals/insects/animated-spider-22986
-- https://assetstore.unity.com/packages/3d/characters/humanoids/fantasy-monster-skeleton-35635
-- https://assetstore.unity.com/packages/p/monster-scavenger-191323
-- https://assetstore.unity.com/packages/3d/environments/fantasy/castle-supply-lite-23699
-- https://assetstore.unity.com/packages/p/hungry-zombie-99750
-- https://assetstore.unity.com/packages/3d/characters/creatures/creature-cave-troll-115707
+## External Audio Assets 
+- **FREE Casual Game SFX Pack :** https://assetstore.unity.com/packages/audio/sound-fx/free-casual-game-sfx-pack-54116
+- **Free Sound Effects Pack:** https://assetstore.unity.com/packages/audio/sound-fx/free-sound-effects-pack-155776
+
+## External Character Assets 
+- **Animated Spider**: https://assetstore.unity.com/packages/3d/characters/animals/insects/animated-spider-22986
+- **Fantasy Monster - Skeleton**: https://assetstore.unity.com/packages/3d/characters/humanoids/fantasy-monster-skeleton-35635
+- **Monster scavenger**: https://assetstore.unity.com/packages/p/monster-scavenger-191323
+- **Hungry Zombie**: https://assetstore.unity.com/packages/p/hungry-zombie-99750
+- **Creature: Cave Troll**: https://assetstore.unity.com/packages/3d/characters/creatures/creature-cave-troll-115707
+
+
+## External Environment Assets 
+- **Castle Supply LITE**: https://assetstore.unity.com/packages/3d/environments/fantasy/castle-supply-lite-23699
+
