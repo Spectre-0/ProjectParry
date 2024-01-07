@@ -80,17 +80,23 @@ public class Enemy : MonoBehaviour
             HandleSlugBehavior();
         }
     }
-
     private void UpdateHealthUI()
     {
-        if (healthSlider.value != currentHealth)
+        // Calculate the percentage of health remaining
+        float healthPercent = (float)currentHealth / maxHealth;
+
+        // Update the health slider to reflect current health
+        if (healthSlider.value != healthPercent)
         {
-            healthSlider.value = currentHealth;
+            Debug.Log("Health Slider: " + healthPercent);
+
+            healthSlider.value = healthPercent;
         }
 
-        if (healthSlider.value != easeHealthSlider.value)
+        // Smoothly transition the ease health slider to match the health slider
+        if (Mathf.Abs(easeHealthSlider.value - healthPercent) > Mathf.Epsilon)
         {
-            easeHealthSlider.value = Mathf.Lerp(easeHealthSlider.value, currentHealth, healthLerpSpeed);
+            easeHealthSlider.value = Mathf.Lerp(easeHealthSlider.value, healthSlider.value, healthLerpSpeed);
         }
     }
 

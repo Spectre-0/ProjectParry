@@ -69,6 +69,14 @@ public class PlayerMotor : MonoBehaviour
     public Animator swordAnimator; // Drag your sword's Animator here in the inspector
 
 
+    AudioManager audioManager;
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
+
+
 
 
     public void TogglePause()
@@ -84,6 +92,9 @@ public class PlayerMotor : MonoBehaviour
             DeactivatePauseMenu();
         }
     }
+
+
+
 
     private void ActivatePauseMenu()
     {
@@ -149,9 +160,35 @@ public class PlayerMotor : MonoBehaviour
         moneyText.text = playerMoney.ToString();
     }
 
+    public int GetScore()
+    {
+        return playerMoney; // 'playerMoney' is the player's score
+    }
+
+        // This method will unpause the game
+    public void UnpauseGame()
+    {
+        Time.timeScale = 1f;
+        isGamePaused = false; // Ensure the game is not considered paused
+
+        // If the pause menu is active, deactivate it
+        if (pauseMenuUI.activeSelf)
+        {
+            pauseMenuUI.SetActive(false);
+        }
+
+        // Lock the cursor to the center of the screen and hide it
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+
+    
+
     // Start is called before the first frame update
     void Start()
     { 
+        UnpauseGame();
         UpdateNumberOfHealsDisplay();
 
         UpdateMoneyDisplay();
@@ -174,6 +211,7 @@ public class PlayerMotor : MonoBehaviour
                 currentStamina += staminaRegenRate * Time.deltaTime;
             }
         }
+
         
         if (currentStamina <= 0)
         {
