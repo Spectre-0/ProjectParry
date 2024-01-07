@@ -63,8 +63,6 @@ A "Souls-like" game developed with Unity 2023.15f1.
 ## External Character Assets 
 - **Animated Spider**: https://assetstore.unity.com/packages/3d/characters/animals/insects/animated-spider-22986
 - **Fantasy Monster - Skeleton**: https://assetstore.unity.com/packages/3d/characters/humanoids/fantasy-monster-skeleton-35635
-- **Monster scavenger**: https://assetstore.unity.com/packages/p/monster-scavenger-191323
-- **Hungry Zombie**: https://assetstore.unity.com/packages/p/hungry-zombie-99750
 - **Creature: Cave Troll**: https://assetstore.unity.com/packages/3d/characters/creatures/creature-cave-troll-115707
 
 
