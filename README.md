@@ -22,9 +22,22 @@ A "Souls-like" game developed with Unity 2023.15f1.
 
 1. **In the Unity Editor, navigate to the `Project` tab and then `Assets/Scenes`.**
    
-2. **Drag "Level 1" into the Unity Hierarchy and remove any other scenes that may be there.**
+2. **Drag "Main Menu" into the Unity Hierarchy and remove any other scenes that may be there.**
   
-3. **Press the Play button (▶️) to load the scene and start the level.**
+3. **Press the Play button (▶️) Which will bring you to the menu then press play and select a level.**
+
+## Gameplay loop
+
+1. **Using Your Sword and your evasive  manuvers Eliminate mob Enemies to increase Score and defeat the Boss the finish the level**
+   
+2. **Limiting factor is Heals**
+  
+3. **Complete levels to unlock levels there are currently 3 levels in total**
+
+3. **Replay levels to Set a new High score**
+
+
+
 
 ## Game Mechanics
 
@@ -33,8 +46,9 @@ A "Souls-like" game developed with Unity 2023.15f1.
 - **Sprint**: Hold `Shift` to sprint in the direction you are moving.
 - **Dodge**: Tap `Left-Ctrl` to dodge in the direction you are moving.
 - **Jump**: Tap `Spacebar` to jump.
-  
+  **Jump**: Tap `Q` to Heal.
 ### HUD Elements
 
 - **Health Bar**: Red bar represents health.
 - **Stamina Bar**: Green bar represents stamina, which is consumed when you sprint, jump, or dodge.
+- **Score**: bottom right corner is the score eliminate more enemies to increase the score
