@@ -1360,11 +1360,16 @@ MonoBehaviour:
   stoppingDistance: 2
   attackCooldown: 2
   attackSpeed: 5
+  viewDistance: 10
   attackHitboxPrefab: {fileID: 3974188327393719564, guid: 4f5425316157f7e4b9f401501f0f8757, type: 3}
   hitboxPos: {fileID: 0}
   fovAngle: 110
   maxDetectionDistance: 10
-  enemyValue: 10000
+  enemyValue: 100
+  attack1HitStart: 0.2
+  attack1HitLastFor: 0.01
+  attack2HitStart: 0.5
+  attack2HitLastFor: 0.01
 --- !u!65 &3888967577186920446
 BoxCollider:
   m_ObjectHideFlags: 0
